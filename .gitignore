@@ -1,0 +1,10 @@
+Pipfile.lock
+/development_config.ini
+/production_config.ini
+build/
+dist/
+*.egg-info
+digital_deception.db
+mysql.credentials
+node_modules/
+__pycache__
