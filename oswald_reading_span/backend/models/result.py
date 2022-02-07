@@ -1,17 +1,12 @@
 from typing import Dict
 from sqlalchemy import Column, DATETIME, Text, String
 
-from digital_deception_emulator.backend.database import Base, BaseEventRecord
-from digital_deception_emulator.backend.rspan.models.test_letter_response import (
-    ReadingSpanLetterResponse,
-)
-from digital_deception_emulator.backend.rspan.models.test_sentence_response import (
-    ReadingSpanSentenceResponse,
-)
-from digital_deception_emulator.backend.rspan.models.test_sentences import (
-    ReadingSpanSentence,
-)
 from cherrypy_utils import timestamp_utils
+from cherrypy_utils.database import Base, BaseEventRecord
+
+from oswald_reading_span.backend.models.letter_response import ReadingSpanLetterResponse
+from oswald_reading_span.backend.models.sentence_response import ReadingSpanSentenceResponse
+from oswald_reading_span.backend.models.sentences import ReadingSpanSentence
 
 
 class MappedReadingSpanResult:

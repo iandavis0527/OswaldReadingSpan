@@ -1,19 +1,12 @@
 import cherrypy
 import json
 
-from digital_deception_emulator.backend.rspan.models.test_letter_response import (
-    ReadingSpanLetterResponse,
-)
-from digital_deception_emulator.backend.rspan.models.test_result import (
-    ReadingSpanResult,
-)
-from digital_deception_emulator.backend.rspan.models.test_sentence_response import (
-    ReadingSpanSentenceResponse,
-)
-
-from digital_deception_emulator.backend.rspan.stimuli.sentences import SENTENCE_LIST
-
 from cherrypy_utils import json_utils
+
+from oswald_reading_span.backend.models.letter_response import ReadingSpanLetterResponse
+from oswald_reading_span.backend.models.result import ReadingSpanResult
+from oswald_reading_span.backend.models.sentence_response import ReadingSpanSentenceResponse
+from oswald_reading_span.backend.stimuli.sentences import SENTENCE_LIST
 
 
 # noinspection PyPep8Naming, PyMethodMayBeStatic
@@ -26,7 +19,7 @@ class RSPANTestApi:
 
     def PUT(self):
         request_json = json_utils.get_request_json()
-        session = cherrypy.request.databases["digital_deception"]
+        session = cherrypy.request.databases["oswald_reading"]
 
         with open("./last_upload_data.json", "w") as json_file:
             json.dump(request_json, json_file)

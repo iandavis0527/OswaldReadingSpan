@@ -1,9 +1,7 @@
-from digital_deception_emulator.backend.rspan.stimuli.sentences import SENTENCES
-
 from typing import Dict
 from sqlalchemy import Column, Integer, Boolean
 
-from digital_deception_emulator.backend.database import Base, BaseEventRecord
+from cherrypy_utils.database import Base, BaseEventRecord
 
 
 class ReadingSpanSentenceResponse(Base, BaseEventRecord):
