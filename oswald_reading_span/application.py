@@ -2,21 +2,16 @@ import argparse
 import json
 import os
 import pathlib
-
 import cherrypy
 
-# noinspection PyUnresolvedReferences
-from cherrypy_utils import authentication
 from cherrypy_utils import url_utils
-from cherrypy_utils import domain
-from cherrypy_utils import templating
 from cherrypy_utils.cherrypy_sqlalchemy_utils import SQLAlchemyTool, SQLAlchemyPlugin
 from cherrypy_utils.database import Base
 
 from oswald_reading_span.backend.api import RSPANTestApi
 from oswald_reading_span.backend.models.sentences import ReadingSpanSentence
 from oswald_reading_span.backend.views import RSPANView
-from oswald_reading_span.backend.configuration import production_config, development_config
+from oswald_reading_span.backend.configuration import application_data, production_config, development_config
 
 
 def initialize_db(session):
@@ -25,18 +20,14 @@ def initialize_db(session):
 
 def setup_server(subdomain="", production=False):
     server_directory = pathlib.Path(__file__).parent.absolute()
-
-    domain.set_domain(subdomain)
-
-    authentication.initialize(
-        api_key_filepath=server_directory.joinpath(
-            "backend",
-            "configuration",
-            "api.key",
-        )
-    )
     template_location = server_directory.joinpath("frontend", "templates")
-    environment = templating.create_environment(template_location)
+    api_key_filepath = server_directory.joinpath("backend", "configuration", "api.key")
+
+    application_data.initialize(
+        subdomain=subdomain,
+        template_location=template_location,
+        api_key_filepath=api_key_filepath,
+    )
 
     cherrypy._cpconfig.environments["production"]["log.screen"] = True
 
@@ -47,25 +38,14 @@ def setup_server(subdomain="", production=False):
         cherrypy.log("Using development configuration")
         active_file = development_config.get_config()
 
-    active_file["oswald_reading_span"] = {"template_engine": environment}
-
     cherrypy._cperror._HTTPErrorTemplate = cherrypy._cperror._HTTPErrorTemplate.replace(
         'Powered by <a href="http://www.cherrypy.org">CherryPy %(version)s</a>\n', ""
     )
     cherrypy.server.socket_host = "0.0.0.0"
     cherrypy.tools.oswald_reading_database = SQLAlchemyTool("oswald_reading")
 
-    cherrypy.tree.mount(
-        RSPANView(),
-        url_utils.combine_url(subdomain),
-        active_file,
-    )
-
-    cherrypy.tree.mount(
-        RSPANTestApi(),
-        url_utils.combine_url(subdomain, "api", "result"),
-        active_file,
-    )
+    cherrypy.tree.mount(RSPANView(), subdomain, active_file)
+    cherrypy.tree.mount(RSPANTestApi(), url_utils.combine_url(subdomain, "api", "result"), active_file)
 
     mysql_filepath = str(server_directory.joinpath("mysql.credentials").resolve())
 

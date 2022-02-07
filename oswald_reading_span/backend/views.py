@@ -1,9 +1,6 @@
 import cherrypy
-import json
 
-from cherrypy_utils import domain
-
-from oswald_reading_span.backend.configuration.base_config import get_template_environment
+from oswald_reading_span.backend.configuration import application_data
 
 # noinspection PyPep8Naming, PyMethodMayBeStatic
 @cherrypy.expose
@@ -13,11 +10,11 @@ class RSPANView:
         print(cherrypy.request.app.config)
 
         return (
-            get_template_environment()
-            .get_template("rspan.html.j2")
+            application_data.get_app()
+            .template_engine.get_template("rspan.html.j2")
             .render(
                 subjectId=subjectId,
                 qualtrics=str(qualtrics).lower(),
-                domain=domain.get_domain_for_template(),
+                domain=application_data.get_app().template_domain(),
             )
         )
