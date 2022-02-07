@@ -30,3 +30,7 @@ def get_config():
             "tools.json_out.on": True,
         },
     }
+
+
+def get_template_environment():
+    return cherrypy.request.app.config["oswald_reading_templates"]

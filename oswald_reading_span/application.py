@@ -36,7 +36,8 @@ def setup_server(subdomain="", production=False):
         )
     )
     template_location = server_directory.joinpath("frontend", "templates")
-    templating.initialize(template_location)
+    environment = templating.create_environment(template_location)
+    cherrypy.config.update({"oswald_reading_templates": environment})
 
     cherrypy._cpconfig.environments["production"]["log.screen"] = True
 
