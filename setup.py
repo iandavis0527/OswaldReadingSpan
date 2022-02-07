@@ -15,13 +15,14 @@ install_and_build(pathlib.Path("oswald_reading_span", "frontend"))
 setup(
     name="oswald_reading_span",
     packages=find_packages(),
-    version="0.1.1",
+    version="1.0.0",
     description="Cherrypy web server plugin for the oswald shortened reading span task",
     author="Me",
     license="MIT",
     include_package_data=True,
     install_requires=[
         "cherrypy",
+        "cherrypy_utils @ git+https://git.mindmodeling.org/ian.davis/CherrypyUtils.git",
         "python-ldap",
         "sqlalchemy",
         "jinja2",

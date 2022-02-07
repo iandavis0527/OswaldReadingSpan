@@ -7,7 +7,7 @@ def get_config():
         "/": {
             "tools.encode.on": True,
             "tools.encode.encoding": "utf-8",
-            "tools.digital_deception_database.on": True,
+            "tools.oswald_reading_database.on": True,
             "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
             "tools.sessions.on": True,
             "request.show_tracebacks": True,
