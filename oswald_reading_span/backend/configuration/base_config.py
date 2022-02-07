@@ -33,4 +33,4 @@ def get_config():
 
 
 def get_template_environment():
-    return cherrypy.request.app.config["oswald_reading_templates"]
+    return cherrypy.request.app.config["oswald_reading_span"]["template_engine"]

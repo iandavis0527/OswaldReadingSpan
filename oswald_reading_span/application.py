@@ -37,7 +37,6 @@ def setup_server(subdomain="", production=False):
     )
     template_location = server_directory.joinpath("frontend", "templates")
     environment = templating.create_environment(template_location)
-    cherrypy.config.update({"oswald_reading_templates": environment})
 
     cherrypy._cpconfig.environments["production"]["log.screen"] = True
 
@@ -47,6 +46,8 @@ def setup_server(subdomain="", production=False):
     elif not production:
         cherrypy.log("Using development configuration")
         active_file = development_config.get_config()
+
+    active_file["oswald_reading_span"] = {"template_engine": environment}
 
     cherrypy._cperror._HTTPErrorTemplate = cherrypy._cperror._HTTPErrorTemplate.replace(
         'Powered by <a href="http://www.cherrypy.org">CherryPy %(version)s</a>\n', ""

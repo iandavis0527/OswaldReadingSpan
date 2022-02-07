@@ -1,21 +1,36 @@
 import subprocess
 import pathlib
+import subprocess
 
 from setuptools import find_packages, setup
+from setuptools.command.install import install
 
 
-def install_and_build(path):
-    subprocess.run(["npm", "install"], cwd=path)
-    subprocess.run(["npm", "run-script", "build"], cwd=path)
+frontend = pathlib.Path("oswald_reading_span", "frontend")
 
 
-print("Building ReactJS Frontend")
-install_and_build(pathlib.Path("oswald_reading_span", "frontend"))
+class NPMInstall(install):
+    def run(self):
+        subprocess.run(["npm", "install"], cwd=frontend.resolve())
+        subprocess.run(["npm", "run-script", "build"], cwd=frontend.resolve())
+        install.run(self)
+
+
+class PostInstallCommand(install):
+    def run(self):
+        print("Building ReactJS Frontend...")
+        self.run_command("npm_install")
+        install.run(self)
+
 
 setup(
+    cmdclass={
+        "install": PostInstallCommand,
+        "npm_install": NPMInstall,
+    },
     name="oswald_reading_span",
     packages=find_packages(),
-    version="1.0.1",
+    version="1.0.3",
     description="Cherrypy web server plugin for the oswald shortened reading span task",
     author="Me",
     license="MIT",
