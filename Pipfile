@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 cherrypy = "*"
-cherrypy_utils = { git = "https://git.mindmodeling.org/ian.davis/CherrypyUtils.git" }
+cherrypy_utils = { git = "gitea@git.mindmodeling.org/ian.davis/CherrypyUtils.git" }
 jinja2 = "*"
 sqlalchemy = "*"
 
