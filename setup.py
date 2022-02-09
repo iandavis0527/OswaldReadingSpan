@@ -30,7 +30,7 @@ setup(
     },
     name="oswald_reading_span",
     packages=find_packages(),
-    version="1.0.6",
+    version="1.0.7",
     description="Cherrypy web server plugin for the oswald shortened reading span task",
     author="Me",
     license="MIT",
