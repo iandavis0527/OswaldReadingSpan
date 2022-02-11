@@ -18,15 +18,21 @@ def initialize_db(session):
     ReadingSpanSentence.initialize_sentences(session)
 
 
-def setup_server(subdomain="", production=False):
+def setup_server(subdomain="", shared_data_location=None, production=False):
     server_directory = pathlib.Path(__file__).parent.absolute()
     template_location = server_directory.joinpath("frontend", "templates")
     api_key_filepath = server_directory.joinpath("backend", "configuration", "api.key")
 
+    if not shared_data_location:
+        shared_data_location = server_directory
+
     application_data.initialize(
         subdomain=subdomain,
+        application_location=server_directory,
+        shared_data_location=server_directory,
         template_location=template_location,
         api_key_filepath=api_key_filepath,
+        production=production,
     )
 
     cherrypy._cpconfig.environments["production"]["log.screen"] = True
@@ -47,7 +53,7 @@ def setup_server(subdomain="", production=False):
     cherrypy.tree.mount(RSPANView(), subdomain, active_file)
     cherrypy.tree.mount(RSPANTestApi(), url_utils.combine_url(subdomain, "api", "result"), active_file)
 
-    mysql_filepath = str(server_directory.joinpath("mysql.credentials").resolve())
+    mysql_filepath = str(server_directory.joinpath("backend", "configuration", "mysql.credentials").resolve())
 
     # mysql connection:
     # mysql+pymysql://<username>:<password>@<host>/<dbname>[?<options>]
