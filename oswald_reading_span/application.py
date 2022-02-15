@@ -63,7 +63,7 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
             connection_string = str("mysql+pymysql://{username}:{password}@{host}/{db_name}").format_map(credentials)
     else:
         cherrypy.log("Using sqlite database file in lieu of mysql credentials!")
-        database_filepath = str(shared_data_location.joinpath("digital_deception.db").resolve())
+        database_filepath = str(pathlib.Path(shared_data_location, "digital_deception.db").resolve())
         connection_string = "sqlite:///" + database_filepath
 
     SQLAlchemyPlugin(
@@ -76,8 +76,8 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
         after_engine_setup=initialize_db,
     )
 
-    cherrypy.log("Publishing db create for digital_deception")
-    cherrypy.engine.publish("digital_deception.db.create")
+    cherrypy.log("Publishing db create for oswald_reading")
+    cherrypy.engine.publish("oswald_reading.db.create")
 
 
 def run(production=False):
