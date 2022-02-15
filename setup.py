@@ -30,7 +30,7 @@ setup(
     },
     name="oswald_reading_span",
     packages=find_packages(),
-    version="1.0.8",
+    version="1.0.9",
     description="Cherrypy web server plugin for the oswald shortened reading span task",
     author="Me",
     license="MIT",
@@ -41,5 +41,6 @@ setup(
         "python-ldap",
         "sqlalchemy",
         "jinja2",
+        "pymysql",
     ],
 )
