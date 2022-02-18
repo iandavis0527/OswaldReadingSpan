@@ -11,8 +11,8 @@ frontend = pathlib.Path("oswald_reading_span", "frontend")
 
 class NPMInstall(install):
     def run(self):
-        subprocess.run(["npm", "install"], cwd=frontend.resolve())
-        subprocess.run(["npm", "run-script", "build"], cwd=frontend.resolve())
+        subprocess.run(["npm", "install"], cwd=frontend.resolve(), capture_output=True)
+        subprocess.run(["npm", "run-script", "build"], cwd=frontend.resolve(), capture_output=True)
         install.run(self)
 
 
@@ -30,7 +30,7 @@ setup(
     },
     name="oswald_reading_span",
     packages=find_packages(),
-    version="1.0.15",
+    version="1.0.16",
     description="Cherrypy web server plugin for the oswald shortened reading span task",
     author="Me",
     license="MIT",
