@@ -1,2 +1,3 @@
 recursive-include oswald_reading_span/frontend/ *
 include oswald_reading_span/backend/configuration/api.key
+include oswald_reading_span/backend/configuration/mysql.credentials
