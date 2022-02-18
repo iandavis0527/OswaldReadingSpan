@@ -59,11 +59,11 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
     cherrypy.tree.mount(RSPANView(), subdomain, active_file)
     cherrypy.tree.mount(RSPANTestApi(), url_utils.combine_url(subdomain, "api", "result"), active_file)
 
-    mysql_filepath = str(server_directory.joinpath("backend", "configuration", "mysql.credentials").resolve())
+    mysql_filepath = server_directory.joinpath("backend", "configuration", "mysql.credentials").resolve()
 
     # mysql connection:
     # mysql+pymysql://<username>:<password>@<host>/<dbname>[?<options>]
-    if os.path.exists(mysql_filepath):
+    if production and mysql_filepath.exists():
         with open(mysql_filepath, "r") as mysql_credentials_file:
             credentials = json.load(mysql_credentials_file)
             connection_string = str("mysql+pymysql://{username}:{password}@{host}/{db_name}").format_map(credentials)
