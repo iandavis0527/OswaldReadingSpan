@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Iterable
 from sqlalchemy import Column, DATETIME, Text, String
 
 from cherrypy_utils import timestamp_utils
@@ -10,12 +10,13 @@ from oswald_reading_span.backend.models.sentences import ReadingSpanSentence
 
 
 class MappedReadingSpanResult:
-    def __init__(self, subject_id, emulator_version, timestamp):
+    def __init__(self, id, subject_id, emulator_version, timestamp):
+        self.id = id
         self.subject_id = subject_id
         self.emulator_version = emulator_version
         self.timestamp = timestamp
-        self.sentence_responses = []
-        self.letter_responses = []
+        self.sentence_responses = []  # type: Iterable[Iterable[ReadingSpanSentenceResponse, ReadingSpanSentence]]
+        self.letter_responses = []  # type: Iterable[ReadingSpanLetterResponse]
 
 
 class ReadingSpanResult(Base, BaseEventRecord):
@@ -46,17 +47,18 @@ class ReadingSpanResult(Base, BaseEventRecord):
         }
 
 
-def get_reading_span_results(session):
+def get_reading_span_sentence_results(session):
     return (
         MappedReadingSpanResult(
+            entity.id,
             entity.subject_id,
             entity.experiment_version,
             entity.timestamp,
         )
         for entity in (
-            session.query(ReadingSpanResult)
+            session.query(ReadingSpanSentenceResponse)
             .join(
-                ReadingSpanSentenceResponse,
+                ReadingSpanResult,
                 ReadingSpanResult.id == ReadingSpanSentenceResponse.test_id,
             )
             .join(
