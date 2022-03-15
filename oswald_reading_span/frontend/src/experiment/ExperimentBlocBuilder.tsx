@@ -45,7 +45,7 @@ export default function ExperimentBlocBuilder(props: Record<string, any>) {
                                     of {properState.setSize}
                                 </div>
                                 <div className={"experiment-feedback-sentences"}>
-                                    You made {properState.sentenceErrors} sentence errors.
+                                    You identified {properState.sentencesCorrect} sentences correctly out of {properState.totalSentences}.
                                 </div>
                             </div>
                         );

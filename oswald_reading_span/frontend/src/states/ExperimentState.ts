@@ -38,14 +38,16 @@ export class ISIDelayState extends ExperimentState {
 
 export class SetFeedbackState extends ExperimentState {
     readonly percentCorrect: number;
-    readonly sentenceErrors: number;
+    readonly sentencesCorrect: number;
+    readonly totalSentences: number;
     readonly setSize: number;
     readonly lettersCorrect: number;
 
     constructor(event: SetFinishedEvent) {
         super(ExperimentStateType.SET_FEEDBACK);
         this.setSize = event.setSize;
-        this.sentenceErrors = event.sentenceErrors;
+        this.sentencesCorrect = event.sentencesCorrect;
+        this.totalSentences = event.totalSentences;
         this.lettersCorrect = event.lettersCorrect;
         this.percentCorrect = event.percentCorrect;
     }

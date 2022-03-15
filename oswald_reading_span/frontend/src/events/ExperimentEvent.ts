@@ -41,14 +41,16 @@ export class SetFinishedEvent extends ExperimentEvent {
     readonly percentCorrect: number;
     readonly lettersCorrect: number;
     readonly setSize: number;
-    readonly sentenceErrors: number;
+    readonly sentencesCorrect: number;
+    readonly totalSentences: number;
 
-    constructor(percentCorrect: number, lettersCorrect: number, setSize: number, sentenceErrors: number) {
+    constructor(percentCorrect: number, lettersCorrect: number, setSize: number, sentencesCorrect: number, totalSentences: number) {
         super(ExperimentEventType.SET_FINISHED);
         this.percentCorrect = percentCorrect;
         this.lettersCorrect = lettersCorrect;
         this.setSize = setSize;
-        this.sentenceErrors = sentenceErrors;
+        this.sentencesCorrect = sentencesCorrect;
+        this.totalSentences = totalSentences;
     }
 }
 

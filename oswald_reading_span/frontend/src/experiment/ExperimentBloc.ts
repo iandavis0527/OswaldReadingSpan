@@ -209,13 +209,13 @@ export class ExperimentBloc extends Bloc<ExperimentEvent, ExperimentState> {
             }
         }
 
-        console.debug("number sentence trial errors: " + this.currentTrialSentenceErrors);
-
         this.add(new SetFinishedEvent(
             this.sentencesResult.percentCorrect(),
             numberCorrectLetters,
             expectedLetters.length,
-            this.currentTrialSentenceErrors));
+            this.sentencesResult.numberCorrect,
+            this.sentencesResult.sentences.length,
+            ));
 
         this.currentTrialSentenceErrors = 0;
 

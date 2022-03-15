@@ -16,5 +16,6 @@
   },
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
-  "python.defaultInterpreterPath": "/Users/iandavis/.local/share/virtualenvs/OswaldReadingSpan-MK8j7C7v-python"
+  "python.defaultInterpreterPath": "/Users/iandavis/.local/share/virtualenvs/OswaldReadingSpan-MK8j7C7v-python",
+  "jest.jestCommandLine": "npm run jest"
 }

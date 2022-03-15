@@ -89,22 +89,23 @@ export interface SentenceSetDescription {
     expectedResponse: boolean;
 }
 
+
 export function generateSentenceSets(setLengths: Array<number>): Array<Array<SentenceSetDescription>> {
-    console.debug("Generating sentence sets");
     let sets: Array<Array<SentenceSetDescription>> = [];
     let tempSentences = shuffle(sentences);
     let currentOffset = 0;
-    // let card = this.props.board.cards[(i * this.props.cardsPerRow) + j];
 
     for (let i = 0; i < setLengths.length; i++) {
         let setLength = setLengths[i];
         let set: Array<SentenceSetDescription> = [];
 
         for (let j = 0; j < setLength; j++) {
-            console.debug("currentOffset: " + currentOffset);
-            console.debug("sentence: " + tempSentences[currentOffset].sentence);
             set.push(tempSentences[currentOffset]);
             currentOffset++;
+
+            if (currentOffset >= tempSentences.length) {
+                currentOffset = 0;
+            }
         }
 
         sets.push(set);
