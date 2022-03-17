@@ -23,9 +23,17 @@ h1 {
   font-size: min(42px, max(24px, 3vw));
 }
 
-.btn.primary {
+.btn.primary,
+.instructions-continue-prompt {
   font-size: min(38px, max(18px, 3vw));
   font-weight: bold;
+  cursor: pointer;
+}
+
+.btn.primary:hover,
+.instructions-continue-prompt:hover {
+  background-color: rgba(100, 255, 255, 0.2);
+  box-shadow: 5px 5px 10px #888888;
 }
 
 #experiment-feedback-container {
