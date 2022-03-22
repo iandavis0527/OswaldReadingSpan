@@ -2,17 +2,18 @@ import { std } from 'mathjs';
 
 export class SentenceResult {
     public sentences: Array<String> = [];
-    public responses: Array<boolean> = [];
+    public responses: Array<boolean | null> = [];
     public expectedResponses: Array<boolean> = [];
     public readingTimes: Array<number> = [];
     public averageRTMillis: number = 0;
     public numberCorrect: number = 0;
 
-    addInput(sentence: String, response: boolean, expectedResponse: boolean, readTimeMillis: number) {
+    addInput(sentence: String, response: boolean | null, expectedResponse: boolean, readTimeMillis: number | null) {
         this.sentences.push(sentence);
         this.responses.push(response);
         this.expectedResponses.push(expectedResponse);
-        this.readingTimes.push(readTimeMillis);
+
+        if (readTimeMillis !== null) this.readingTimes.push(readTimeMillis);
 
         if (response === expectedResponse) {
             this.numberCorrect++;
@@ -21,9 +22,9 @@ export class SentenceResult {
             console.debug(sentence);
         }
 
-        if (this.averageRTMillis === 0) {
+        if (this.averageRTMillis === 0 && readTimeMillis !== null) {
             this.averageRTMillis = readTimeMillis;
-        } else {
+        } else if (readTimeMillis !== null) {
             this.averageRTMillis = (this.averageRTMillis + readTimeMillis) / 2;
         }
     }
@@ -46,9 +47,10 @@ export class SentenceResult {
     }
 
     maxReadingTime(): number {
+        const stdDeviation = std(this.readingTimes);
         console.debug(`[SENTENCE_PRACTICE][SENTENCE_MAX] - AVERAGE READING TIME = ${this.meanReadTime()}`);
-        console.debug(`[SENTENCE_PRACTICE][SENTENCE_MAX] - STANDARD DEVIATION = ${std(this.readingTimes)}`);
+        console.debug(`[SENTENCE_PRACTICE][SENTENCE_MAX] - STANDARD DEVIATION = ${stdDeviation}`);
         // The max reading time is defined as 2.5 times the standard deviation of the reading times.
-        return this.meanReadTime() + (2.5 * std(this.readingTimes));
+        return this.meanReadTime() + (2.5 * stdDeviation);
     }
 }

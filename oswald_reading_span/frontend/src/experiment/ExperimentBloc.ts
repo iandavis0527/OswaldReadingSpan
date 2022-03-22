@@ -15,7 +15,7 @@ import {
     CombinedInstructions3State, ExperimentStartScreenState
 } from "../states/InstructionsStates";
 import {shuffle} from "../utils/array_shuffle";
-import {SensePromptRespondedEvent, SentenceReadEvent, ShowSentenceEvent} from "../events/SentenceEvents";
+import {SensePromptRespondedEvent, SentenceReadEvent, SentenceTimeoutEvent, ShowSentenceEvent} from "../events/SentenceEvents";
 import {ShowingSensePromptState, ShowingSentenceState} from "../states/SentenceStates";
 import {SentenceResult} from "../results/SentenceResult";
 import {LetterResult} from "../results/LetterResult";
@@ -109,7 +109,8 @@ export class ExperimentBloc extends Bloc<ExperimentEvent, ExperimentState> {
                     readEvent.readingTimeMillis);
                 break;
             case ExperimentEventType.SENTENCE_TIMED_OUT:
-                // let timedOutEvent = (event as SentenceTimeoutEvent);
+                let timedOutEvent = (event as SentenceTimeoutEvent);
+                this.sentencesResult.addInput(timedOutEvent.sentence, null, timedOutEvent.expectedResponse, null);
                 // TODO: Add the timeout event to the sentences result.
                 this.showLetter().then();
                 break;

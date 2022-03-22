@@ -2,7 +2,7 @@ import { SentenceResult } from "../../results/SentenceResult";
 
 export interface SerializedSentenceMessage {
     sentences: Array<String>;
-    responses: Array<boolean>;
+    responses: Array<boolean | null>;
     expected_responses: Array<boolean>;
     reading_times: Array<number>;
     average_rt_millis: number;

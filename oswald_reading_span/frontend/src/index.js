@@ -8,6 +8,7 @@ import {
   PracticeSentenceState,
   RunningExperimentState,
 } from "./states/AppState";
+import SentenceMakesSensePrompt from "./sentence/SentenceMakesSensePrompt";
 
 const subjectId = window.subjectId ? window.subjectId : "missing-subject-id";
 const qualtricsEmbedded = window.qualtricsEmbedded
@@ -30,6 +31,20 @@ function onExperimentFinished() {
   );
 }
 
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <div className={"App"}>
+//       <SentenceMakesSensePrompt
+//         showingFeedback={true}
+//         sentence={"Test"}
+//         response={true}
+//         expectedResponse={false}
+//         readingTimeMillis={4500}
+//       />
+//     </div>
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// );
 ReactDOM.render(
   <React.StrictMode>
     <App
