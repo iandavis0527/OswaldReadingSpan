@@ -7,6 +7,7 @@ export class SentenceResult {
     public readingTimes: Array<number> = [];
     public averageRTMillis: number = 0;
     public numberCorrect: number = 0;
+    public speedErrors: number = 0;
 
     addInput(sentence: String, response: boolean | null, expectedResponse: boolean, readTimeMillis: number | null) {
         this.sentences.push(sentence);
@@ -14,6 +15,7 @@ export class SentenceResult {
         this.expectedResponses.push(expectedResponse);
 
         if (readTimeMillis !== null) this.readingTimes.push(readTimeMillis);
+        if (response === null) this.speedErrors++;
 
         if (response === expectedResponse) {
             this.numberCorrect++;

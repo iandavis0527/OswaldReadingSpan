@@ -7,6 +7,7 @@ export interface SerializedSentenceMessage {
     reading_times: Array<number>;
     average_rt_millis: number;
     number_correct: number;
+    speed_errors: number;
 }
 
 export function serializeSentenceResult(result: SentenceResult): SerializedSentenceMessage {
@@ -17,6 +18,7 @@ export function serializeSentenceResult(result: SentenceResult): SerializedSente
         reading_times: result.readingTimes,
         average_rt_millis: result.averageRTMillis,
         number_correct: result.numberCorrect,
+        speed_errors: result.speedErrors,
     };
 }
 
@@ -28,5 +30,6 @@ export function deserializeSentenceResult(result: SerializedSentenceMessage): Se
     sentenceResult.readingTimes = result.reading_times;
     sentenceResult.averageRTMillis = result.average_rt_millis;
     sentenceResult.numberCorrect = result.number_correct;
+    sentenceResult.speedErrors = result.speed_errors;
     return sentenceResult;
 }
