@@ -4,7 +4,7 @@ export interface SerializedSentenceMessage {
     sentences: Array<String>;
     responses: Array<boolean | null>;
     expected_responses: Array<boolean>;
-    reading_times: Array<number>;
+    reading_times: Array<number | null>;
     average_rt_millis: number;
     number_correct: number;
     speed_errors: number;

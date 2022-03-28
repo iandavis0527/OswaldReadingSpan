@@ -11,8 +11,9 @@ class ReadingSpanSentenceResponse(Base, BaseEventRecord):
 
     test_id = Column(Integer, nullable=False)
     sentence_id = Column(Integer, nullable=False)
-    response = Column(Boolean, nullable=False)
-    reading_time = Column(Integer, nullable=False)
+    response = Column(Boolean, nullable=True)
+    reading_time = Column(Integer, nullable=True)
+    speed_error = Column(Boolean, nullable=False)
 
     @classmethod
     def _parse_dict(cls, data: Dict) -> Dict:

@@ -60,6 +60,7 @@ class RSPANTestApi:
                 sentence_id=sentence_id,
                 response=response,
                 reading_time=reading_time,
+                speed_error=response is None,
             )
             session.add(response)
 
