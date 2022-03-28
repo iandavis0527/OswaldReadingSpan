@@ -1,4 +1,4 @@
-import { filter, std } from 'mathjs';
+import { std } from 'mathjs';
 import filterNulls from '../utils/filter_nulls';
 
 export class SentenceResult {
