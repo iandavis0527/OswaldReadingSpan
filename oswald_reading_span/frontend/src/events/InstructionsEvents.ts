@@ -12,6 +12,12 @@ export class LetterInstructions2ClickedEvent extends ExperimentEvent {
     }
 }
 
+export class LetterInstructions3ClickedEvent extends ExperimentEvent {
+    constructor() {
+        super(ExperimentEventType.LETTER_INSTRUCTIONS3_CLICKED);
+    }
+}
+
 export class SentenceInstructions1ClickedEvent extends ExperimentEvent {
     constructor() {
         super(ExperimentEventType.SENTENCE_INSTRUCTIONS1_CLICKED);
@@ -21,6 +27,12 @@ export class SentenceInstructions1ClickedEvent extends ExperimentEvent {
 export class SentenceInstructions2ClickedEvent extends ExperimentEvent {
     constructor() {
         super(ExperimentEventType.SENTENCE_INSTRUCTIONS2_CLICKED);
+    }
+}
+
+export class SentenceInstructions3ClickedEvent extends ExperimentEvent {
+    constructor() {
+        super(ExperimentEventType.SENTENCE_INSTRUCTIONS3_CLICKED);
     }
 }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import InstructionsPage from "../components/InstructionsPage";
 import { LetterInstructions2ClickedEvent } from "../events/InstructionsEvents";
+import image from "../assets/instructions/instructions-letter-prompt.png";
 
 export default class LetterInstructions2 extends React.Component {
   constructor(props) {
@@ -16,13 +17,8 @@ export default class LetterInstructions2 extends React.Component {
         title={""}
         continuePrompt={"Click in this box to continue."}
         paragraphs={[
-          "For this practice set, letters will appear on the screen one at a time.",
-          "After 2 letters have been shown, you will see a screen listing 12 possible letters.",
-          <span>
-            Your job is to select each letter in the <b>ORDER PRESENTED</b>. To
-            do this, use the mouse to click on the letter. The letters you
-            select will appear at the bottom of the screen.
-          </span>,
+          "For the first part of the practice, letters will appear on the screen one at a time.",
+          <img src={image} className={"instruction-image"} />,
         ]}
       />
     );

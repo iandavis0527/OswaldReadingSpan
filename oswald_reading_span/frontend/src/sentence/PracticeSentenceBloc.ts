@@ -23,6 +23,7 @@ import {
   SentenceInstructions1State,
   SentenceInstructions2State,
   SentenceInstructions3State,
+  SentenceInstructions4State,
 } from "../states/InstructionsStates";
 import {
   ExperimentEvent,
@@ -58,6 +59,9 @@ export class PracticeSentenceBloc extends Bloc<
         break;
       case ExperimentEventType.SENTENCE_INSTRUCTIONS2_CLICKED:
         yield new SentenceInstructions3State();
+            break;
+      case ExperimentEventType.SENTENCE_INSTRUCTIONS3_CLICKED:
+        yield new SentenceInstructions4State();
         break;
       case ExperimentEventType.SENTENCE_PRACTICE_STARTED:
         this.mapPracticeEvent().then(() => {});

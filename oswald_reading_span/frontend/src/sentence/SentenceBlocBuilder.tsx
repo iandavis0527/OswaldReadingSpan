@@ -13,6 +13,7 @@ import SentenceMakesSensePrompt from "./SentenceMakesSensePrompt";
 
 import "../css/sentence-task.css";
 import {ExperimentState, ExperimentStateType} from "../states/ExperimentState";
+import SentenceInstructions4 from "./SentenceInstructions4";
 
 export default function SentenceBlocBuilder(props: Record<string, any>) {
     return <BlocBuilder
@@ -25,7 +26,9 @@ export default function SentenceBlocBuilder(props: Record<string, any>) {
                 case ExperimentStateType.SENTENCE_INSTRUCTIONS2:
                     return <SentenceInstructions2 bloc={props.bloc}/>
                 case ExperimentStateType.SENTENCE_INSTRUCTIONS3:
-                    return <SentenceInstructions3 bloc={props.bloc}/>
+                    return <SentenceInstructions3 bloc={props.bloc} />
+                case ExperimentStateType.SENTENCE_INSTRUCTIONS4:
+                    return <SentenceInstructions4 bloc={props.bloc} />
                 case ExperimentStateType.SHOWING_SENTENCE:
                     return <SentenceView
                         sentence={(state as ShowingSentenceState).sentence}

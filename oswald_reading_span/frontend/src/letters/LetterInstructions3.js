@@ -1,6 +1,7 @@
 import React from "react";
 import InstructionsPage from "../components/InstructionsPage";
-import { LetterPracticeStartedEvent } from "../events/LetterEvents";
+import image from "../assets/instructions/instructions-letter-grid1.png";
+import { LetterInstructions3ClickedEvent } from "../events/InstructionsEvents";
 
 export default class LetterInstructions3 extends React.Component {
   constructor(props) {
@@ -13,29 +14,26 @@ export default class LetterInstructions3 extends React.Component {
     return (
       <InstructionsPage
         onInstructionsClicked={this.onInstructionsClicked}
-        continuePrompt={
-          "When you're ready, click in this box to start the letter practice."
-        }
+        continuePrompt={"Click in this box to continue."}
         title={""}
         paragraphs={[
           <span>
-            When you have selected all the letters, and they are in the correct
-            order, hit the <b>SUBMIT</b> box at the bottom right of the screen.
+            After the set of letters has been shown, you will see a screen
+            listing 12 possible letters.
           </span>,
           <span>
-            If you make a mistake, hit the <b>CLEAR</b> box to start over.
+            Your job is to select all letters from the set in the{" "}
+            <b>same order</b> they were presented. To do this, use the mouse to
+            click on the letters. The letters selected will appear at the bottom
+            of the screen
           </span>,
-          <span>
-            If you forget one of the letters, click the <b>BLANK</b> box to mark
-            the spot for the missing letter.
-          </span>,
-          "Remember, it is very important to get the letters in the same order as you see them.",
+          <img src={image} className={"instruction-image"} />,
         ]}
       />
     );
   }
 
   onInstructionsClicked() {
-    this.props.bloc.add(new LetterPracticeStartedEvent());
+    this.props.bloc.add(new LetterInstructions3ClickedEvent());
   }
 }

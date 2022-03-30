@@ -11,6 +11,7 @@ import {
 import LetterView from "./LetterView";
 import LetterGridView from "./LetterGridView";
 import {ExperimentState, ExperimentStateType} from "../states/ExperimentState";
+import LetterInstructions4 from "./LetterInstructions4";
 
 export default function LetterBlocBuilder(props: Record<string, any>) {
         return <BlocBuilder
@@ -24,7 +25,9 @@ export default function LetterBlocBuilder(props: Record<string, any>) {
                         case ExperimentStateType.LETTER_INSTRUCTIONS2:
                             return (<LetterInstructions2 bloc={props.bloc}/>);
                         case ExperimentStateType.LETTER_INSTRUCTIONS3:
-                            return (<LetterInstructions3 bloc={props.bloc}/>);
+                            return (<LetterInstructions3 bloc={props.bloc} />);
+                        case ExperimentStateType.LETTER_INSTRUCTIONS4:
+                            return <LetterInstructions4 bloc={props.bloc} />;
                         case ExperimentStateType.SHOWING_LETTER:
                             return (<LetterView letter={(state as ShowingLetterState).letter}/>);
                         case ExperimentStateType.HIDING_LETTER:

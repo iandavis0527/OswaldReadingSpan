@@ -19,7 +19,8 @@ import {ExperimentState} from "../states/ExperimentState";
 import {
     LetterInstructions1State,
     LetterInstructions2State,
-    LetterInstructions3State
+    LetterInstructions3State,
+    LetterInstructions4State,
 } from "../states/InstructionsStates";
 import {ExperimentEvent, ExperimentEventType} from "../events/ExperimentEvent";
 
@@ -44,6 +45,9 @@ export class PracticeLetterBloc extends Bloc<ExperimentEvent, ExperimentState> {
                 break;
             case ExperimentEventType.LETTER_INSTRUCTIONS2_CLICKED:
                 yield new LetterInstructions3State();
+                break;
+            case ExperimentEventType.LETTER_INSTRUCTIONS3_CLICKED:
+                yield new LetterInstructions4State();
                 break;
             case ExperimentEventType.LETTER_PRACTICE_STARTED:
                 this.mapPracticeEvent().then(() => {

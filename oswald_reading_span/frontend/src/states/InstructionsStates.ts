@@ -18,6 +18,12 @@ export class LetterInstructions3State extends ExperimentState {
     }
 }
 
+export class LetterInstructions4State extends ExperimentState {
+    constructor() {
+        super(ExperimentStateType.LETTER_INSTRUCTIONS4);
+    }
+}
+
 export class SentenceInstructions1State extends ExperimentState {
     constructor() {
         super(ExperimentStateType.SENTENCE_INSTRUCTIONS1);
@@ -33,6 +39,12 @@ export class SentenceInstructions2State extends ExperimentState {
 export class SentenceInstructions3State extends ExperimentState {
     constructor() {
         super(ExperimentStateType.SENTENCE_INSTRUCTIONS3);
+    }
+}
+
+export class SentenceInstructions4State extends ExperimentState {
+    constructor() {
+        super(ExperimentStateType.SENTENCE_INSTRUCTIONS4);
     }
 }
 

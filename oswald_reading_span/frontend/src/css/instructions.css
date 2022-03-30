@@ -21,3 +21,27 @@
   background-color: #cccccc;
   color: #666666;
 }
+
+.orange-instruction-text,
+.green-instruction-text,
+.purple-instruction-text {
+  padding: 0 5px;
+  border: 4px solid black;
+}
+
+.orange-instruction-text {
+  border-color: orange;
+}
+
+.green-instruction-text {
+  border-color: greenyellow;
+}
+
+.purple-instruction-text {
+  border-color: violet;
+}
+
+.instruction-sentence-preview {
+  background-color: lightgray;
+  padding: 5px;
+}

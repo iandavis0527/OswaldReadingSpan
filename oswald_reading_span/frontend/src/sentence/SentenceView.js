@@ -52,7 +52,7 @@ export default class SentenceView extends React.Component {
       clearTimeout(this.timeoutHandle);
     }
 
-    if (readingTimeMillis < 2000) {
+    if (readingTimeMillis < 1500) {
       alert(
         "Too Fast! Please Ensure you read the sentence fully before clicking."
       );

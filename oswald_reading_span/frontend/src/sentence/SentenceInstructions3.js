@@ -1,6 +1,8 @@
 import React from "react";
 import InstructionsPage from "../components/InstructionsPage";
 import { SentencePracticeStartedEvent } from "../events/SentenceEvents";
+import image from "../assets/instructions/instructions-sentence-feedback.png";
+import { SentenceInstructions3ClickedEvent } from "../events/InstructionsEvents";
 
 export default class SentenceInstructions3 extends React.Component {
   constructor(props) {
@@ -13,22 +15,27 @@ export default class SentenceInstructions3 extends React.Component {
     return (
       <InstructionsPage
         onInstructionsClicked={this.onInstructionsClicked}
-        continuePrompt={
-          "When you're ready, click in this box to try some practice problems."
-        }
+        continuePrompt={"Click in this box to continue."}
         paragraphs={[
-          //   "It is VERY important that you answer the sentence problems correctly.  ",
           <span>
-            It is very important that you try and read the sentences as{" "}
-            <b>QUICKLY</b> and as <b>ACCURATELY</b> as possible.
+            After clicking on either the{" "}
+            <span className={"orange-instruction-text"}>TRUE</span> or{" "}
+            <span className={"purple-instruction-text"}>FALSE</span> button, a
+            message will appear indicating whether you made a correct or
+            incorrect choice.
           </span>,
-          "Your reading times will be recorded and determine the pace at which sentences are displayed for the duration of the task.",
+          <span>
+            Once you have read the feedback, click the{" "}
+            <span className={"green-instruction-text"}>NEXT</span> button to
+            continue.
+          </span>,
+          <img src={image} className={"instruction-image"} />,
         ]}
       />
     );
   }
 
   onInstructionsClicked() {
-    this.props.bloc.add(new SentencePracticeStartedEvent());
+    this.props.bloc.add(new SentenceInstructions3ClickedEvent());
   }
 }

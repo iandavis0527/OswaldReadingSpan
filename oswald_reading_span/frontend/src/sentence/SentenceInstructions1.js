@@ -16,12 +16,20 @@ export default class SentenceInstructions1 extends React.Component {
         continuePrompt={"Click in this box to continue."}
         title={"INSTRUCTIONS"}
         paragraphs={[
-          "Now you will practice doing the sentence reading part of the task.",
-          "A sentence will appear on the screen, like this:",
-          '"I like to run in the park."',
-          "As soon as you see the sentence, you should read it and determine if it makes sense or not.",
-          "The above sentence makes sense.",
-          "When you have read the sentence and determined whether it makes sense or not, you will click the mouse button.",
+          <span>
+            Now you will practice the sentence reading part of the task.
+          </span>,
+          <span>A sentence will appear on the screen like this:</span>,
+          <span className={"instruction-sentence-preview"}>
+            I like to run in the park with my trees on upside down.
+          </span>,
+          <span>
+            When you read the sentence, determine whether it makes sense.{" "}
+          </span>,
+          <span>For example, the sentence does not make sense.</span>,
+          <span>
+            Once you have decided, click the mouse anywhere to continue.
+          </span>,
         ]}
       />
     );
