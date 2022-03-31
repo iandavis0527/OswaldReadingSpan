@@ -56,12 +56,12 @@ class NPMInstall(install):
 
 class PostInstallCommand(install):
     user_options = install.user_options + [
-        ("version=", None, None),
+        ("version=", None, "The version number for this package"),
     ]
 
     def initialize_options(self):
         install.initialize_options(self)
-        self.version = None
+        self.version = version
 
     def finalize_options(self):
         install.finalize_options(self)
