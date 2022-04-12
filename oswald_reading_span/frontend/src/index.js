@@ -50,7 +50,7 @@ ReactDOM.render(
     <App
       subjectId={subjectId}
       onExperimentFinished={onExperimentFinished}
-      //   initialAppState={new RunningExperimentState()}
+      initialAppState={new PracticeBothState()}
     />
   </React.StrictMode>,
   document.getElementById("root")

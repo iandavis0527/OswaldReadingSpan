@@ -25,6 +25,7 @@ import {generateLetterSet} from "../stimuli/letters";
 import {generateSentenceSets, SentenceSetDescription} from "../stimuli/sentences";
 import {ShowingGridState, ShowingLetterState} from "../states/LetterStates";
 import {FinishedExperimentEvent, FinishedPracticeBothEvent} from "../events/AppEvent";
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 
 // Practice shows 2 sets of 2 sentences and letters.
 // Experiment shows 6 sets -- 2 of length 4, 2 of length 5 and 2 of length 6.
@@ -39,6 +40,7 @@ export class ExperimentBloc extends Bloc<ExperimentEvent, ExperimentState> {
     private practice: boolean = false;
 
     private sentenceSets: Array<Array<SentenceSetDescription>> = [];
+    private practiceSentences: Array<Array<SentenceSetDescription>> = [];
     private letterSets: Array<Array<string>> = [];
     private currentSetIndex: number = 0;
     private currentSetOffset: number = 0;
@@ -236,14 +238,19 @@ export class ExperimentBloc extends Bloc<ExperimentEvent, ExperimentState> {
         }
 
         this.sentenceSets = shuffle(this.sentenceSets);
+        this.practiceSentences = this.sentenceSets;
         this.letterSets = shuffle(this.letterSets);
     }
 
     generateExperimentSets() {
         let setLengths = [4, 4, 5, 5, 6, 6];
         setLengths = shuffle(setLengths);
+        let skipSentences: Array<SentenceSetDescription> = [];
 
-        this.sentenceSets = generateSentenceSets(setLengths);
+        if (this.practiceSentences !== undefined && this.practiceSentences !== null && this.practiceSentences.length > 0) skipSentences = this.practiceSentences.flat();
+        console.debug("Generating experiment sentences, ignoring practice sentences: ");
+        console.debug(skipSentences);
+        this.sentenceSets = generateSentenceSets(setLengths, skipSentences);
 
         console.debug(this.sentenceSets);
 

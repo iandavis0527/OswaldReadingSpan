@@ -90,9 +90,9 @@ export interface SentenceSetDescription {
 }
 
 
-export function generateSentenceSets(setLengths: Array<number>): Array<Array<SentenceSetDescription>> {
+export function generateSentenceSets(setLengths: Array<number>, skipSentences: Array<SentenceSetDescription>=[]): Array<Array<SentenceSetDescription>> {
     let sets: Array<Array<SentenceSetDescription>> = [];
-    let tempSentences = shuffle(sentences);
+    let tempSentences = filterSentences(shuffle(sentences), skipSentences);
     let currentOffset = 0;
 
     for (let i = 0; i < setLengths.length; i++) {
@@ -112,4 +112,8 @@ export function generateSentenceSets(setLengths: Array<number>): Array<Array<Sen
     }
 
     return sets;
+}
+
+export function filterSentences(sentences: Array<SentenceSetDescription>, skipSentences: Array<SentenceSetDescription> = []) {
+    return sentences.filter(sentence_object => skipSentences.find(this_sentence_object => sentence_object.sentence == this_sentence_object.sentence) === undefined);
 }
