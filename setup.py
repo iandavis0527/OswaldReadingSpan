@@ -11,7 +11,7 @@ frontend = pathlib.Path("oswald_reading_span", "frontend")
 package_data_filepath = pathlib.Path("package_data.json")
 npm_package_filepath = pathlib.Path(frontend, "package.json")
 
-version = "2022.04.12.16.04"
+version = "2022.04.26.11.37"
 
 with open(package_data_filepath) as package_data_file:
     package_data = json.load(package_data_file)
