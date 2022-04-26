@@ -26,9 +26,9 @@ export default class CombinedInstructions2 extends React.Component {
             your best to get the letters in the correct order.
           </span>,
           <span>
-            It is important to work <b>QUICKLY</b> and <b>ACCURATELY</b> on the
-            sentences. Make sure you know whether the sentence makes sense or
-            not before clicking to the next screen.
+            It is important to work <b>QUICKLY</b> and answer as{" "}
+            <b>ACCURATELY</b> as possible. Make sure you know whether the
+            sentence makes sense or not before clicking to the next screen.
           </span>,
           <span>
             After the recall screen, you will be given feedback about your

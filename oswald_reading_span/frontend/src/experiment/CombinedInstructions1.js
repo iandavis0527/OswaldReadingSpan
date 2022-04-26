@@ -34,7 +34,7 @@ export default class CombinedInstructions1 extends React.Component {
           </span>,
           <span>
             Therefore it is very important to read the sentences as
-            <b> QUICKLY</b> and as <b>ACCURATELY</b> as possible.
+            <b> QUICKLY</b> and answer as <b>ACCURATELY</b> as possible.
           </span>,
         ]}
       />

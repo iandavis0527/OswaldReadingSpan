@@ -26,7 +26,7 @@ export default class SentenceInstructions1 extends React.Component {
           <span>
             When you read the sentence, determine whether it makes sense.{" "}
           </span>,
-          <span>For example, the sentence does not make sense.</span>,
+          <span>For example, the sentence above does not make sense.</span>,
           <span>
             Once you have decided, click the mouse anywhere to continue.
           </span>,

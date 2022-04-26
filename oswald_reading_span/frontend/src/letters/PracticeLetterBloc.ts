@@ -23,6 +23,7 @@ import {
     LetterInstructions4State,
 } from "../states/InstructionsStates";
 import {ExperimentEvent, ExperimentEventType} from "../events/ExperimentEvent";
+import { shuffle } from "../utils/array_shuffle";
 
 
 export class PracticeLetterBloc extends Bloc<ExperimentEvent, ExperimentState> {
@@ -89,9 +90,11 @@ export class PracticeLetterBloc extends Bloc<ExperimentEvent, ExperimentState> {
     }
 
     async mapPracticeEvent() {
+        let shuffledLetters = shuffle(letters);
+        
         for (let i = 0; i < this.lettersToShow; i++) {
             console.debug("Creating events for letter index " + i);
-            let letter = letters[Math.floor(Math.random() * letters.length)];
+            let letter = shuffledLetters[i];
             this.properLetters.push(letter);
             console.debug("Adding Show Letter event for letter: " + letter + " at time " + new Date().getMilliseconds());
             this.add(new ShowLetterEvent(letter));

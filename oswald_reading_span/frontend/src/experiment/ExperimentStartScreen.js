@@ -61,8 +61,8 @@ export default class ExperimentStartScreen extends React.Component {
           "Some sets will have more sentences and letters than others.",
           "It is important that you do your best on both the sentence problems and the letter recall parts of this experiment.",
           <span>
-            Remember for the sentences you must work as <b>QUICKLY</b> and{" "}
-            <b>ACCURATELY</b> (at least 85%) as possible.
+            Remember for the sentences you must work as <b>QUICKLY</b> and
+            answer as <b>ACCURATELY</b> (at least 85%) as possible.
           </span>,
           "Please take a small 5 second break, and click the mouse to begin the experiment.",
         ]}

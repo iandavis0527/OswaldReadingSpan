@@ -17,7 +17,7 @@ export default class SentenceInstructions4 extends React.Component {
         paragraphs={[
           <span>
             It is very important that you try to read the sentences as{" "}
-            <b>QUICKLY</b> and <b>CAREFULLY</b> as possible.
+            <b>QUICKLY</b> and answer as <b>ACCURATELY</b> as possible.
           </span>,
           <span>
             Your reading times during the practice will be used to determine the
