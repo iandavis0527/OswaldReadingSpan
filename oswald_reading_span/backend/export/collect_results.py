@@ -69,3 +69,28 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
 
 def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
     return session.execute(LONG_FORM_QUERY.bindparams(subject_ids=",".join(subject_ids)))
+
+
+def summary_header():
+    return [
+        "id",
+        "timestamp",
+        "subject_id",
+        "experiment_version",
+        "number_letters_correct",
+        "total_letters",
+    ]
+
+
+def long_header():
+    return [
+        "id",
+        "timestamp",
+        "subject_id",
+        "experiment_version",
+        "chosen_letters",
+        "proper_letters",
+        "sentence",
+        "sentence_response",
+        "expected_sentence_response",
+    ]

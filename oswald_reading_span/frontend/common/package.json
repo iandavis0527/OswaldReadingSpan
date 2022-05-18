@@ -1,0 +1,29 @@
+{
+  "name": "rspan_common",
+  "version": "1.0.0",
+  "description": "RSPAN Common Library Functions and Definitions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run compile && npm run copy-css",
+    "copy-css": "mkdir ./lib/css && cp ./src/css/* ./lib/css",
+    "compile": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/progressbar.js": "^1.1.2",
+    "@types/react": "^17.0.45",
+    "typescript": "^3.2.1"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "mathjs": "^9.3.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.1"
+  }
+}
