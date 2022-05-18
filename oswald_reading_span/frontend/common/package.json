@@ -21,6 +21,7 @@
     "lib/**/*"
   ],
   "dependencies": {
+    "progressbar.js": "^1.1.0",
     "mathjs": "^9.3.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
