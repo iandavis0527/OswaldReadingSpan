@@ -1,21 +1,21 @@
-import subprocess
 import pathlib
-import subprocess
 import json
+import datetime
 
 from setuptools import find_packages, setup
 from setuptools.command.install import install
 
+from cherrypy_utils import reactjs_utils
 
 frontend = pathlib.Path("oswald_reading_span", "frontend")
+main = pathlib.Path(frontend, "main")
+export = pathlib.Path(frontend, "export")
+common = pathlib.Path(frontend, "common")
+
 package_data_filepath = pathlib.Path("package_data.json")
 npm_package_filepath = pathlib.Path(frontend, "package.json")
 
-version = "2022.04.26.11.37"
-
-with open(package_data_filepath) as package_data_file:
-    package_data = json.load(package_data_file)
-    version = package_data["version"]
+version = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
 
 
 def update_version_numbers(version_number):
@@ -39,18 +39,9 @@ def update_version_numbers(version_number):
 
 class NPMInstall(install):
     def run(self):
-        subprocess.run(
-            ["npm", "install"],
-            cwd=frontend.resolve(),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        subprocess.run(
-            ["npm", "run-script", "build"],
-            cwd=frontend.resolve(),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+        reactjs_utils.npm_build(common.resolve())
+        reactjs_utils.npm_build(export.resolve())
+        reactjs_utils.npm_build(main.resolve())
         install.run(self)
 
 

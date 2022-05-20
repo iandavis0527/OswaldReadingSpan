@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm_build_all",
+      "dependsOn": [
+        "npm_build_common",
+        "npm_build_export",
+        "npm_build_frontend"
+      ]
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "oswald_reading_span/frontend/common/",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm_build_common",
+      "detail": "npm run compile && npm run copy-css"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "oswald_reading_span/frontend/main/",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm_build_main",
+      "detail": "webpack --mode production --progress --config webpack.config.js"
+    },
+    {
+      "type": "npm",
+      "script": "build",
+      "path": "oswald_reading_span/frontend/export/",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm_build_export",
+      "detail": "react-scripts build"
+    }
+  ]
+}

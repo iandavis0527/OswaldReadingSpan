@@ -8,6 +8,8 @@ from cherrypy_utils.cherrypy_sqlalchemy_utils import SQLAlchemyTool, SQLAlchemyP
 from cherrypy_utils.database import Base
 
 from oswald_reading_span.backend.api import RSPANTestApi
+from oswald_reading_span.backend.export.views import RSPANExportView
+from oswald_reading_span.backend.login.views import LoginView
 from oswald_reading_span.backend.models.sentences import ReadingSpanSentence
 from oswald_reading_span.backend.views import RSPANView
 from oswald_reading_span.backend.configuration import application_data, production_config, development_config
@@ -19,7 +21,7 @@ def initialize_db(session):
 
 def setup_server(subdomain="", shared_data_location=None, production=False):
     server_directory = pathlib.Path(__file__).parent.absolute()
-    template_location = server_directory.joinpath("frontend", "templates")
+    template_location = server_directory.joinpath("frontend", "main", "templates")
     api_key_filepath = server_directory.joinpath("backend", "configuration", "api.key")
 
     if not shared_data_location:
@@ -55,6 +57,13 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
     cherrypy.server.socket_host = "0.0.0.0"
     cherrypy.tools.oswald_reading_database = SQLAlchemyTool("oswald_reading")
 
+    cherrypy.tree.mount(
+        LoginView(),
+        url_utils.combine_url(subdomain, "export", "login"),
+        {
+            "/": {"tools.sessions.on": True},
+        },
+    )
     cherrypy.tree.mount(RSPANView(), subdomain, active_file)
     cherrypy.tree.mount(RSPANTestApi(), url_utils.combine_url(subdomain, "api", "result"), active_file)
 
@@ -89,7 +98,7 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
 
 
 def run(production=False):
-    setup_server(production=production)
+    setup_server(subdomain="/digital-deception/rspan", production=production)
 
     cherrypy.engine.signals.subscribe()
 

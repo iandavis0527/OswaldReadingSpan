@@ -11,12 +11,12 @@ def get_config():
             "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
             "tools.sessions.on": True,
             "request.show_tracebacks": True,
-            "tools.staticdir.root": pathlib.Path(__file__).parent.parent.parent.joinpath("frontend", "main").resolve(),
+            "tools.staticdir.root": pathlib.Path(__file__).parent.parent.parent.joinpath("frontend").resolve(),
         },
         "/export": {
-            "tools.staticdir.root": pathlib.Path(__file__)
-            .parent.parent.parent.joinpath("frontend", "export")
-            .resolve(),
+            "tools.staticdir.on": True,
+            "tools.staticdir.dir": pathlib.Path("export", "build"),
+            "tools.staticdir.index": "index.html",
         },
         "/api": {
             "tools.response_headers.on": True,
@@ -27,7 +27,7 @@ def get_config():
         },
         "/static": {
             "tools.staticdir.on": True,
-            "tools.staticdir.dir": pathlib.Path("dist"),
+            "tools.staticdir.dir": pathlib.Path("main", "dist"),
         },
         "/api/result": {
             "tools.require_api_key.on": True,

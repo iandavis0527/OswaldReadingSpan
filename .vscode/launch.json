@@ -1,15 +1,19 @@
 {
   "configurations": [
     {
-      "name": "Python: Current File",
+      "command": "npm start",
+      "name": "Dashboard NPM",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/oswald_reading_span/frontend/export"
+    },
+    {
+      "name": "Cherrypy Server",
       "type": "python",
       "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal",
-      "cwd": "${workspaceRoot}",
-      "env": {
-        "PYTHONPATH": "${workspaceRoot}"
-      }
+      "module": "oswald_reading_span.application",
+      "justMyCode": true,
+      "preLaunchTask": "npm_build_all"
     }
   ]
 }

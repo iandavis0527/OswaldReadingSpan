@@ -1,15 +1,14 @@
 import "./export_table.css";
 
 import React from "react";
+import autoBind from "auto-bind";
 import { DataTable } from "./datatable";
-import NetworkProgressBar from "rspan_common/lib/network/_progress_bar";
+import NetworkProgressBar from "./network_progress_bar";
 
-export class RSPANResultTable extends React.Component {
+export default class RSPANResultTable extends React.Component {
   constructor(props) {
     super(props);
-
-    this.initiateDataLoad = this.initiateDataLoad.bind(this);
-    this.onDataLoaded = this.onDataLoaded.bind(this);
+    autoBind(this);
     this.dataTableRef = React.createRef();
 
     this.state = {
@@ -25,10 +24,21 @@ export class RSPANResultTable extends React.Component {
         className={"experiment-test-datatable"}
         id={"experiment-test-datatable"}
       >
-        <NetworkProgressBar
-          initiateDataLoad={this.initiateDataLoad}
-          onDataLoaded={this.onDataLoaded}
-        />
+        <div
+          className={
+            this.state.hasData
+              ? "progress-bar-container hidden"
+              : "progress-bar-container"
+          }
+        >
+          <h1 className="progress-bar-title">
+            Loading subject data, please wait...
+          </h1>
+          <NetworkProgressBar
+            initiateDataLoad={this.props.initiateDataLoad}
+            onDataLoaded={this.onDataLoaded}
+          />
+        </div>
         <DataTable
           columnNames={["ID", "Timestamp", "Subject ID"]}
           columns={["id", "iso_timestamp", "subject_id"]}
@@ -41,10 +51,6 @@ export class RSPANResultTable extends React.Component {
         />
       </div>
     );
-  }
-
-  initiateDataLoad() {
-    return this.props.serverDriver.getAllExperimentTests();
   }
 
   onDataLoaded(data) {

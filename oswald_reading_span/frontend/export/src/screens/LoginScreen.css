@@ -1,0 +1,93 @@
+.login-screen.has-errors>.login-body-container>.login-text-field {
+    border: 2px solid red;
+    /* border-radius: 4px; */
+    /* padding: 10px; */
+}
+
+.login-screen.has-errors>.login-body-container>.login-text-field::after {
+    content: "test";
+    color: red;
+    display: inline-block;
+}
+
+.login-body-container {
+    display: flex;
+    flex-direction: column;
+    
+    margin: 20px auto;
+    padding: 10px;
+    height: 350px;
+
+    font-size:20px;
+    text-align: center;
+    font-weight: bold;
+
+    background-color: #fff;
+    border-radius: 15px;
+
+    width: 400px;
+    /* height: 600px; */
+}
+
+.login-field {
+    margin: 10px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 16px;
+    outline: 0;
+    font-family: inherit;
+    font-size: 0.95em;
+}
+
+.login-text-field {
+    font-size: 16px;
+    font-weight: bold;
+    background: #fff;
+    border-color: #bbb;
+    border-radius: 20px;
+}
+
+.login-text-field:focus {
+    border-color: #888;
+}
+
+::placeholder {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.login-submit-button {
+    background: #28d;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.login-submit-button:hover {
+    background: #17c;
+}
+
+.login-submit-button:focus {
+    border-color: #05a;
+}
+
+.login-body-title {
+    text-align: center;
+}
+
+.login-screen-error-text {
+    text-align: center;
+    color: red;
+}
+
+.login-screen-wait-text {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    
+}
+
+.login-progress-bar-container {
+    margin: auto;
+}
+

@@ -6,13 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run compile && npm run copy-css",
-    "copy-css": "mkdir ./lib/css && cp ./src/css/* ./lib/css",
+    "copy-css": "mkdir -p ./lib/css && cp ./src/css/* ./lib/css",
     "compile": "tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/js-cookie": "^3.0.2",
     "@types/progressbar.js": "^1.1.2",
     "@types/react": "^17.0.45",
     "typescript": "^3.2.1"
@@ -21,8 +22,9 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "progressbar.js": "^1.1.0",
+    "js-cookie": "^3.0.1",
     "mathjs": "^9.3.2",
+    "progressbar.js": "^1.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1"

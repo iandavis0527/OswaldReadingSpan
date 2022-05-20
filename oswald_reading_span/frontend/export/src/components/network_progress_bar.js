@@ -1,5 +1,7 @@
 import React from "react";
-import { RadialProgress } from "./radialprogress";
+import CircularIndeterminate from "./circular_indeterminate_progress";
+
+import "./network_progress_bar.css";
 
 export default class NetworkProgressBar extends React.Component {
   constructor(props) {
@@ -27,10 +29,6 @@ export default class NetworkProgressBar extends React.Component {
         dataLoaded: true,
       });
     });
-
-    this.progressBar = new RadialProgress(this.progressBarRef.current, {
-      indeterminate: true,
-    });
   }
 
   render() {
@@ -38,6 +36,10 @@ export default class NetworkProgressBar extends React.Component {
       return "";
     }
 
-    return <div className={"network-progress-bar"} ref={this.progressBarRef} />;
+    return (
+      <div className={"network-progress-bar"}>
+        <CircularIndeterminate />
+      </div>
+    );
   }
 }

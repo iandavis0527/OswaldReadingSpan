@@ -1,0 +1,13 @@
+.experiment-test-datatable {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.dataTables_wrapper {
+    background-color: white;
+    margin: 10px 20px;
+    padding: 15px;
+    border-radius: 5px;
+}
