@@ -119,12 +119,14 @@ export default class LoginScreen extends React.Component<LoginArguments, _LoginS
             const response = await fetch(statusUrl);
             const data = await response.text();
 
-            if (!response.ok || data == "false") {
-                this.setState({loginState: LoginState.WAITING_USER_INPUT});
-            } else {
-                this.setState({ loginState: LoginState.LOGGED_IN });
-                this.props.onLoginSucceeded();
-            }
+            isLoggedIn = response.ok && data === "true";
+        }
+
+        if (!isLoggedIn) {
+            this.setState({loginState: LoginState.WAITING_USER_INPUT});
+        } else {
+            this.setState({ loginState: LoginState.LOGGED_IN });
+            this.props.onLoginSucceeded();
         }
     }
 
@@ -141,7 +143,7 @@ export default class LoginScreen extends React.Component<LoginArguments, _LoginS
             await new Promise((resolve) => {
                 setTimeout(resolve, 1000);
             });
-            successful = false;
+            successful = true;
         } else {
             console.debug(process.env.PUBLIC_URL)
             let loginUrl = urlJoin("login", "post");

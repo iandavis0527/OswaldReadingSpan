@@ -8,6 +8,7 @@ from cherrypy_utils.cherrypy_sqlalchemy_utils import SQLAlchemyTool, SQLAlchemyP
 from cherrypy_utils.database import Base
 
 from oswald_reading_span.backend.api import RSPANTestApi
+from oswald_reading_span.backend.export.api import RSPANExportDownload
 from oswald_reading_span.backend.export.views import RSPANExportView
 from oswald_reading_span.backend.login.views import LoginView
 from oswald_reading_span.backend.models.sentences import ReadingSpanSentence
@@ -64,8 +65,33 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
             "/": {"tools.sessions.on": True},
         },
     )
+    cherrypy.tree.mount(
+        RSPANExportDownload(),
+        url_utils.combine_url(subdomain, "export", "download"),
+        {
+            "/": {
+                "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+                "tools.sessions.on": True,
+                "tools.oswald_reading_database.on": True,
+            },
+        },
+    )
     cherrypy.tree.mount(RSPANView(), subdomain, active_file)
-    cherrypy.tree.mount(RSPANTestApi(), url_utils.combine_url(subdomain, "api", "result"), active_file)
+    cherrypy.tree.mount(
+        RSPANTestApi(),
+        url_utils.combine_url(subdomain, "api", "result"),
+        {
+            "/": {
+                "request.dispatch": cherrypy.dispatch.MethodDispatcher(),
+                "tools.require_api_key.on": True,
+                "tools.response_headers.on": True,
+                "tools.response_headers.headers": [("Content-Type", "application/json")],
+                "tools.json_in.on": True,
+                "tools.json_out.on": True,
+                "tools.oswald_reading_database.on": True,
+            }
+        },
+    )
 
     mysql_filepath = server_directory.joinpath("backend", "configuration", "mysql.credentials").resolve()
 

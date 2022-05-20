@@ -40,8 +40,8 @@ export default class RSPANResultTable extends React.Component {
           />
         </div>
         <DataTable
-          columnNames={["ID", "Timestamp", "Subject ID"]}
-          columns={["id", "iso_timestamp", "subject_id"]}
+          columnNames={["ID", "Timestamp", "Subject ID", "Experiment Version"]}
+          columns={["id", "timestamp", "subject_id", "experiment_version"]}
           tableData={this.state.data}
           hasData={this.state.hasData}
           tableId={"experiment-test-table"}
@@ -49,11 +49,19 @@ export default class RSPANResultTable extends React.Component {
           onRowSelected={this.props.onRowSelected}
           ref={this.dataTableRef}
         />
+        <button
+          id={this.state.hasData ? "export-button" : "export-button-hidden"}
+          onClick={this.props.onExportClicked}
+        >
+          Export
+        </button>
       </div>
     );
   }
 
   onDataLoaded(data) {
+    console.debug("export_table.onDataLoaded");
+    console.debug(data);
     this.setState({
       hasData: true,
       data: data,

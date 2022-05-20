@@ -14,8 +14,17 @@ from oswald_reading_span.backend.stimuli.sentences import SENTENCE_LIST
 @cherrypy.tools.json_in()
 @cherrypy.tools.json_out()
 class RSPANTestApi:
-    def GET(self, subject_id=None):
-        return {"message": "GET api not yet implemented!"}
+    def GET(self, subject_ids=None):
+        session = cherrypy.request.databases["oswald_reading"]
+        results = session.query(ReadingSpanResult)
+
+        if subject_ids and len(subject_ids) >= 1:
+            results = results.filter(ReadingSpanResult.subject_id.in_(subject_ids))
+
+        results = results.all()
+
+        cherrypy.response.status = "200 Ok"
+        return [result.to_dict() for result in results]
 
     def PUT(self):
         request_json = json_utils.get_request_json()

@@ -14,7 +14,7 @@ from oswald_reading_span.backend.export.collect_results import (
 
 
 @cherrypy.expose
-class RSPANExportApi:
+class RSPANExportDownload:
     def GET(self, subject_ids=None):
         app = application_data.get_app()
 
@@ -28,14 +28,14 @@ class RSPANExportApi:
         output = io.StringIO()
         export_session_csv(
             output,
-            cherrypy.request.databases["digital_deception"],
+            cherrypy.request.databases["oswald_reading"],
             subject_ids,
         )
 
         summary_output = io.StringIO()
         export_session_summary(
             summary_output,
-            cherrypy.request.databases["digital_deception"],
+            cherrypy.request.databases["oswald_reading"],
             subject_ids,
         )
 
