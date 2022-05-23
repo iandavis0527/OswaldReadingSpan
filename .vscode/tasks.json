@@ -3,11 +3,7 @@
   "tasks": [
     {
       "label": "npm_build_all",
-      "dependsOn": [
-        "npm_build_common",
-        "npm_build_export",
-        "npm_build_frontend"
-      ]
+      "dependsOn": ["npm_build_common", "npm_build_export", "npm_build_main"]
     },
     {
       "type": "npm",

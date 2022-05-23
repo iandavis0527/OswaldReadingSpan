@@ -111,7 +111,7 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
         cherrypy.engine,
         Base,
         connection_string,
-        echo=False,
+        echo=True,
         pool_recycle=20000,
         after_engine_setup=initialize_db,
     )
