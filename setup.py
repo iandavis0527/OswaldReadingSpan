@@ -13,7 +13,11 @@ export = pathlib.Path(frontend, "export")
 common = pathlib.Path(frontend, "common")
 
 package_data_filepath = pathlib.Path("package_data.json")
-npm_package_filepath = pathlib.Path(frontend, "package.json")
+npm_package_filepaths = [
+    pathlib.Path(frontend, "common", "package.json"),
+    pathlib.Path(frontend, "export", "package.json"),
+    pathlib.Path(frontend, "main", "package.json"),
+]
 
 version = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")
 
@@ -29,12 +33,13 @@ def update_version_numbers(version_number):
     with open(package_data_filepath, "w") as package_data_file:
         json.dump(package_data, package_data_file, indent=4)
 
-    with open(npm_package_filepath) as package_data_file:
-        package_data = json.load(package_data_file)
-        package_data["version"] = version_number
+    for npm_package_filepath in npm_package_filepaths:
+        with open(npm_package_filepath) as package_data_file:
+            package_data = json.load(package_data_file)
+            package_data["version"] = version_number
 
-    with open(npm_package_filepath, "w") as package_data_file:
-        json.dump(package_data, package_data_file, indent=4)
+        with open(npm_package_filepath, "w") as package_data_file:
+            json.dump(package_data, package_data_file, indent=4)
 
 
 class NPMInstall(install):
