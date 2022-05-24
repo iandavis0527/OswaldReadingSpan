@@ -16,6 +16,7 @@
         "@types/js-cookie": "^3.0.2",
         "@types/progressbar.js": "^1.1.2",
         "@types/react": "^17.0.45",
+        "tsc": "^2.0.4",
         "typescript": "^3.2.1"
     },
     "files": [
