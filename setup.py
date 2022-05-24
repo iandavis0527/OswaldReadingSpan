@@ -42,7 +42,7 @@ def update_version_numbers(version_number):
 
     with open(package_data_filepath) as package_data_file:
         package_data = json.load(package_data_file)
-        package_data["version"] = version_number
+        package_data["version"] = version_number.replace("-", ".")
 
     with open(package_data_filepath, "w") as package_data_file:
         json.dump(package_data, package_data_file, indent=4)
@@ -50,7 +50,7 @@ def update_version_numbers(version_number):
     for npm_package_filepath in npm_package_filepaths:
         with open(npm_package_filepath) as package_data_file:
             package_data = json.load(package_data_file)
-            package_data["version"] = version_number
+            package_data["version"] = version_number.replace("-", ".")
 
         with open(npm_package_filepath, "w") as package_data_file:
             json.dump(package_data, package_data_file, indent=4)
