@@ -6,7 +6,7 @@ from sqlalchemy.sql import bindparam
 
 SUMMARY_QUERY = text(
     """
-SELECT DISTINCT
+SELECT
     ReadingSpanResult.id, timestamp, subject_id, experiment_version,
     number_correct AS number_letters_correct, total_letters,
     (SELECT 
@@ -44,7 +44,7 @@ SUMMARY_QUERY = SUMMARY_QUERY.bindparams(bindparam("subject_ids", expanding=True
 
 LONG_FORM_QUERY = text(
     """
-SELECT DISTINCT
+SELECT
     ReadingSpanResult.id, timestamp, subject_id, experiment_version,
     chosen_letters, proper_letters,
     sentence, response AS sentence_response, expected_response AS expected_sentence_response
@@ -63,7 +63,7 @@ LONG_FORM_QUERY = LONG_FORM_QUERY.bindparams(bindparam("subject_ids", expanding=
 
 LONG_FORM_START = text(
     """
-SELECT DISTINCT
+SELECT
     ReadingSpanResult.id, ReadingSpanResult.timestamp, ReadingSpanResult.subject_id, ReadingSpanResult.experiment_version, chosen_letters, proper_letters
     FROM ReadingSpanResult
     INNER JOIN ReadingSpanLetterResponse ON ReadingSpanResult.id = ReadingSpanLetterResponse.test_id
