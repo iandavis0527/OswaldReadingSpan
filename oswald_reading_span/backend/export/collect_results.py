@@ -80,8 +80,8 @@ SELECT sentence, response AS sentence_response, expected_response AS expected_se
     FROM ReadingSpanSentenceResponse 
     INNER JOIN ReadingSpanSentence 
         ON ReadingSpanSentenceResponse.sentence_id = ReadingSpanSentence.id
-    WHERE ReadingSpanSentenceResponse.test_id = (:test_id)
-    LIMIT (:num_results), (:offset);
+    WHERE ReadingSpanSentenceResponse.test_id = :test_id
+    LIMIT :num_results, :offset;
     """
 )
 
