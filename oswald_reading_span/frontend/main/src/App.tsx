@@ -26,7 +26,7 @@ import SentenceBlocBuilder from "./sentence/SentenceBlocBuilder";
 import ExperimentBlocBuilder from "./experiment/ExperimentBlocBuilder";
 import { ExperimentBloc } from "./experiment/ExperimentBloc";
 
-import UploadingResultsScreen from "rspan_common/lib/network//screens/UploadingResults";
+import UploadingResultsScreen from "./network/screens/UploadingResults";
 import FinishedExperimentScreen from "./finished_experiment_screen";
 
 import ServerDriver from "rspan_common/lib/network//server_driver";
