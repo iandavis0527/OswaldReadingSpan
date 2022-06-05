@@ -118,7 +118,8 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
             if sentence.response == sentence_data.expected_response:
                 total_sentences_correct += 1
 
-            average_reading_time += sentence.reading_time
+            if sentence.reading_time:
+                average_reading_time += sentence.reading_time
 
         average_reading_time = average_reading_time / total_sentences
 
@@ -203,7 +204,7 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
                 sentence = current_sentence_data.sentence
                 expected_response = current_sentence_data.expected_response
                 response = current_sentence.response
-                reading_time = current_sentence.reading_time
+                reading_time = current_sentence.reading_time if current_sentence.reading_time else "N/A"
 
                 data.append(
                     [
