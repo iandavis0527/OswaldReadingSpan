@@ -1,6 +1,6 @@
 {
   "name": "rspan_common",
-  "version": "2022-05-23-16-09",
+  "version": "2022.05.23.16.09",
   "description": "RSPAN Common Library Functions and Definitions",
   "main": "index.js",
   "scripts": {
@@ -12,12 +12,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/js-cookie": "^3.0.2",
-    "@types/progressbar.js": "^1.1.2",
-    "@types/react": "^17.0.45",
-    "typescript": "^4.2.0"
-  },
+  "devDependencies": {},
   "files": [
     "lib/**/*"
   ],
@@ -27,6 +22,10 @@
     "progressbar.js": "^1.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1"
+    "react-scripts": "4.0.1",
+    "typescript": "^4.2.0",
+    "@types/js-cookie": "^3.0.2",
+    "@types/progressbar.js": "^1.1.2",
+    "@types/react": "^17.0.45"
   }
 }

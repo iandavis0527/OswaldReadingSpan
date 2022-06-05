@@ -123,8 +123,19 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
     cherrypy.log("=" * 100)
 
 
-def run(production=False):
-    setup_server(subdomain="/digital-deception/rspan", production=production)
+def run(subdomain="/digital-deception/rspan", production=False, shared_data_location=None, port=8080):
+    old_mount_function = cherrypy.tree.mount
+
+    def _monkey_mount(handler, url, config_file):
+        cherrypy.log("Mounting URL {0}".format(url))
+        old_mount_function(handler, url, config_file)
+
+    cherrypy.tree.mount = _monkey_mount
+
+    setup_server(subdomain=subdomain, production=production, shared_data_location=shared_data_location)
+
+    cherrypy.log("setting server port to:" + str(port))
+    cherrypy.config.update({"server.socket_port": port})
 
     cherrypy.engine.signals.subscribe()
 
@@ -134,6 +145,14 @@ def run(production=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Run the Reading Span web server")
-    parser.add_argument("--production", action="store_true", help="Enable production mode")
+    parser.add_argument("--subdomain", default="/digital-deception/rspan", help="The sub domain to mount the app at")
+    parser.add_argument("--production", default=False, action="store_true", help="Enable production mode")
+    parser.add_argument("--shared_data_location", help="The location of the root shared data folder")
+    parser.add_argument("--port", type=int, help="The port to listen on", default=8080)
     args = parser.parse_args()
-    run(production=args.production)
+    run(
+        subdomain=args.subdomain,
+        production=args.production,
+        shared_data_location=args.shared_data_location,
+        port=args.port,
+    )
