@@ -1,7 +1,11 @@
 from typing import Iterable
-from more_itertools import numeric_range
 from sqlalchemy.sql import text
 from sqlalchemy.sql import bindparam
+from oswald_reading_span.backend.models.letter_response import ReadingSpanLetterResponse
+
+from oswald_reading_span.backend.models.result import ReadingSpanResult
+from oswald_reading_span.backend.models.sentence_response import ReadingSpanSentenceResponse
+from oswald_reading_span.backend.models.sentences import ReadingSpanSentence
 
 
 SUMMARY_QUERY = text(
@@ -89,58 +93,134 @@ SELECT_N_SENTENCES = SELECT_N_SENTENCES.bindparams(test_id="", num_results=5, of
 
 
 def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dict]:
-    # query = SUMMARY_QUERY.bindparams(subject_ids=",".join(subject_ids))
-    return session.execute(
-        SUMMARY_QUERY,
-        params={
-            "subject_ids": subject_ids,
-        },
-    )
+    data = []
+    results = session.query(ReadingSpanResult).filter(ReadingSpanResult.subject_id.in_(subject_ids))
+
+    for result in results:
+        letter_responses = (
+            session.query(ReadingSpanLetterResponse).filter(ReadingSpanLetterResponse.test_id == result.id).all()
+        )
+        sentence_responses = (
+            session.query(ReadingSpanSentenceResponse).filter(ReadingSpanSentenceResponse.test_id == result.id).all()
+        )
+
+        total_letters = letter_responses[0].total_letters
+        total_correct_letters = letter_responses[0].number_correct
+        total_sentences = len(sentence_responses)
+        total_sentences_correct = 0
+        average_reading_time = 0
+
+        for sentence in sentence_responses:
+            sentence_data = (
+                session.query(ReadingSpanSentence).filter(ReadingSpanSentence.id == sentence.sentence_id).all()
+            )[0]
+
+            if sentence.response == sentence_data.expected_response:
+                total_sentences_correct += 1
+
+            average_reading_time += sentence.reading_time
+
+        average_reading_time = average_reading_time / total_sentences
+
+        data.append(
+            [
+                result.id,
+                result.timestamp,
+                result.subject_id,
+                result.experiment_version,
+                total_correct_letters,
+                total_letters,
+                total_sentences_correct,
+                total_sentences,
+            ]
+        )
+
+    return data
 
 
 def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
-    # long_form_start = session.execute(LONG_FORM_START.bindparams(subject_ids=",".join(subject_ids)))
-    long_form_start = session.execute(
-        LONG_FORM_START,
-        params={
-            "subject_ids": subject_ids,
-        },
-    )
-    results = []
-    current_sentence_offset = 0
+    data = []
+    results = session.query(ReadingSpanResult).filter(ReadingSpanResult.subject_id.in_(subject_ids))
 
-    for row in long_form_start.all():
-        test_id = row["id"]
-        proper_letters = row["proper_letters"].split(",")
-        chosen_letters = row["chosen_letters"].split(",")
-        number_letters = len(proper_letters)
-        sentences = session.execute(
-            SELECT_N_SENTENCES,
-            params={
-                "test_id": test_id,
-                "num_results": number_letters,
-                "offset": current_sentence_offset,
-            },
+    for result in results:
+        letter_responses = (
+            session.query(ReadingSpanLetterResponse).filter(ReadingSpanLetterResponse.test_id == result.id).all()
         )
-        current_sentence_offset += number_letters
+        sentence_responses = (
+            session.query(ReadingSpanSentenceResponse).filter(ReadingSpanSentenceResponse.test_id == result.id).all()
+        )
 
-        for chosen_letter, proper_letter, sentence_row in zip(chosen_letters, proper_letters, sentences):
-            results.append(
-                [
-                    test_id,
-                    row["timestamp"],
-                    row["subject_id"],
-                    row["experiment_version"],
-                    chosen_letter,
-                    proper_letter,
-                    sentence_row["sentence"],
-                    sentence_row["sentence_response"],
-                    sentence_row["expected_sentence_response"],
-                ]
-            )
+        current_sentence_offset = 0
 
-    # return session.execute(LONG_FORM_QUERY.bindparams(subject_ids=",".join(subject_ids)))
-    return results
+        for letter_response in letter_responses:
+            for (chosen_letter, proper_letter) in zip(
+                letter_response.chosen_letters.split(","),
+                letter_response.proper_letters.split(","),
+            ):
+                if current_sentence_offset >= len(sentence_responses):
+                    print("using N/A sentence because we are past the limit of sentences")
+                    sentence = "N/A"
+                    expected_response = "N/A"
+                    response = "N/A"
+                    reading_time = "N/A"
+                else:
+                    current_sentence = sentence_responses[current_sentence_offset]
+                    current_sentence_data = (
+                        session.query(ReadingSpanSentence)
+                        .filter(ReadingSpanSentence.id == current_sentence.sentence_id)
+                        .all()
+                    )[0]
+                    current_sentence_offset += 1
+                    sentence = current_sentence_data.sentence
+                    expected_response = current_sentence_data.expected_response
+                    response = current_sentence.response
+                    reading_time = current_sentence.reading_time
+
+                data.append(
+                    [
+                        result.id,
+                        result.timestamp,
+                        result.subject_id,
+                        result.experiment_version,
+                        chosen_letter,
+                        proper_letter,
+                        sentence,
+                        response,
+                        expected_response,
+                        reading_time,
+                    ]
+                )
+
+        if current_sentence_offset < len(sentence_responses):
+            print("parsing left over sentences after finishing all letter responses")
+
+            for current_sentence in sentence_responses[current_sentence_offset:]:
+                current_sentence_data = (
+                    session.query(ReadingSpanSentence)
+                    .filter(ReadingSpanSentence.id == current_sentence.sentence_id)
+                    .all()
+                )[0]
+                sentence = current_sentence_data.sentence
+                expected_response = current_sentence_data.expected_response
+                response = current_sentence.response
+                reading_time = current_sentence.reading_time
+
+                data.append(
+                    [
+                        result.id,
+                        result.timestamp,
+                        result.subject_id,
+                        result.experiment_version,
+                        "N/A",
+                        "N/A",
+                        sentence,
+                        response,
+                        expected_response,
+                        reading_time,
+                    ]
+                )
+
+    return data
 
 
 def summary_header():
@@ -168,4 +248,5 @@ def long_header():
         "sentence",
         "sentence_response",
         "expected_sentence_response",
+        "sentence_read_time",
     ]

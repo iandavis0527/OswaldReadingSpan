@@ -94,5 +94,8 @@ def export_session_summary(output, session, subject_ids):
     writer = csv.writer(output)
     writer.writerow(summary_header())
 
-    for record in results.all():
+    if not isinstance(results, list):
+        results = results.all()
+
+    for record in results:
         writer.writerow(record)
