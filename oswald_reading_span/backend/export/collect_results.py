@@ -137,6 +137,7 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
                 total_letters,
                 total_sentences_correct,
                 total_sentences,
+                average_reading_time,
                 speed_errors,
             ]
         )
@@ -213,7 +214,7 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
                 expected_response = current_sentence_data.expected_response
                 response = current_sentence.response
                 reading_time = current_sentence.reading_time if current_sentence.reading_time else "N/A"
-                speed_error = current_sentence.speed_error if current_sentence.speed_error else "N/A"
+                speed_error = current_sentence.speed_error if current_sentence.speed_error is not None else "N/A"
 
                 data.append(
                     [
