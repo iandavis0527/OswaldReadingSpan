@@ -104,12 +104,26 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
             session.query(ReadingSpanSentenceResponse).filter(ReadingSpanSentenceResponse.test_id == result.id).all()
         )
 
-        total_letters = letter_responses[0].total_letters
-        total_correct_letters = letter_responses[0].number_correct
+        total_letters = 0
+        total_correct_letters = 0
         total_sentences = len(sentence_responses)
         total_sentences_correct = 0
         average_reading_time = 0
         speed_errors = 0
+
+        for letter_response in letter_responses:
+            chosen_letters = letter_response.chosen_letters.split(",")
+            proper_letters = letter_response.proper_letters.split(",")
+            total_letters += len(proper_letters)
+
+            for index, proper_letter in enumerate(proper_letters):
+                if index >= len(chosen_letters):
+                    chosen_letter = "N/A"
+                else:
+                    chosen_letter = chosen_letters[index]
+
+                if proper_letter == chosen_letter:
+                    total_correct_letters += 1
 
         for sentence in sentence_responses:
             sentence_data = (
@@ -160,10 +174,15 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
         current_sentence_offset = 0
 
         for letter_response in letter_responses:
-            for (chosen_letter, proper_letter) in zip(
-                letter_response.chosen_letters.split(","),
-                letter_response.proper_letters.split(","),
-            ):
+            chosen_letters = letter_response.chosen_letters.split(",")
+            proper_letters = letter_response.proper_letters.split(",")
+
+            for index, proper_letter in enumerate(proper_letters):
+                if index >= len(chosen_letters):
+                    chosen_letter = "N/A"
+                else:
+                    chosen_letter = chosen_letters[index]
+
                 if current_sentence_offset >= len(sentence_responses):
                     print("using N/A sentence because we are past the limit of sentences")
                     sentence = "N/A"
