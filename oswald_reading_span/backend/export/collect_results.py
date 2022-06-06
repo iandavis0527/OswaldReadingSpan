@@ -104,11 +104,26 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
             session.query(ReadingSpanSentenceResponse).filter(ReadingSpanSentenceResponse.test_id == result.id).all()
         )
 
-        total_letters = letter_responses[0].total_letters
-        total_correct_letters = letter_responses[0].number_correct
+        total_letters = 0
+        total_correct_letters = 0
         total_sentences = len(sentence_responses)
         total_sentences_correct = 0
         average_reading_time = 0
+        speed_errors = 0
+
+        for letter_response in letter_responses:
+            chosen_letters = letter_response.chosen_letters.split(",")
+            proper_letters = letter_response.proper_letters.split(",")
+            total_letters += len(proper_letters)
+
+            for index, proper_letter in enumerate(proper_letters):
+                if index >= len(chosen_letters):
+                    chosen_letter = "N/A"
+                else:
+                    chosen_letter = chosen_letters[index]
+
+                if proper_letter == chosen_letter:
+                    total_correct_letters += 1
 
         for sentence in sentence_responses:
             sentence_data = (
@@ -118,7 +133,11 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
             if sentence.response == sentence_data.expected_response:
                 total_sentences_correct += 1
 
-            average_reading_time += sentence.reading_time
+            if sentence.reading_time:
+                average_reading_time += sentence.reading_time
+
+            if sentence.speed_error:
+                speed_errors += 1
 
         average_reading_time = average_reading_time / total_sentences
 
@@ -132,6 +151,8 @@ def collect_results_summary(session, subject_ids: Iterable[str]) -> Iterable[dic
                 total_letters,
                 total_sentences_correct,
                 total_sentences,
+                average_reading_time,
+                speed_errors,
             ]
         )
 
@@ -153,16 +174,22 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
         current_sentence_offset = 0
 
         for letter_response in letter_responses:
-            for (chosen_letter, proper_letter) in zip(
-                letter_response.chosen_letters.split(","),
-                letter_response.proper_letters.split(","),
-            ):
+            chosen_letters = letter_response.chosen_letters.split(",")
+            proper_letters = letter_response.proper_letters.split(",")
+
+            for index, proper_letter in enumerate(proper_letters):
+                if index >= len(chosen_letters):
+                    chosen_letter = "N/A"
+                else:
+                    chosen_letter = chosen_letters[index]
+
                 if current_sentence_offset >= len(sentence_responses):
                     print("using N/A sentence because we are past the limit of sentences")
                     sentence = "N/A"
                     expected_response = "N/A"
                     response = "N/A"
                     reading_time = "N/A"
+                    speed_error = "N/A"
                 else:
                     current_sentence = sentence_responses[current_sentence_offset]
                     current_sentence_data = (
@@ -175,6 +202,7 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
                     expected_response = current_sentence_data.expected_response
                     response = current_sentence.response
                     reading_time = current_sentence.reading_time
+                    speed_error = current_sentence.speed_error
 
                 data.append(
                     [
@@ -188,6 +216,7 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
                         response,
                         expected_response,
                         reading_time,
+                        speed_error,
                     ]
                 )
 
@@ -203,7 +232,8 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
                 sentence = current_sentence_data.sentence
                 expected_response = current_sentence_data.expected_response
                 response = current_sentence.response
-                reading_time = current_sentence.reading_time
+                reading_time = current_sentence.reading_time if current_sentence.reading_time else "N/A"
+                speed_error = current_sentence.speed_error if current_sentence.speed_error is not None else "N/A"
 
                 data.append(
                     [
@@ -217,6 +247,7 @@ def collect_long_results(session, subject_ids: Iterable[str]) -> Iterable[dict]:
                         response,
                         expected_response,
                         reading_time,
+                        speed_error,
                     ]
                 )
 
@@ -234,6 +265,7 @@ def summary_header():
         "correct_sentence_count",
         "total_sentence_count",
         "average_sentence_read_time",
+        "speed_errors",
     ]
 
 
@@ -249,4 +281,5 @@ def long_header():
         "sentence_response",
         "expected_sentence_response",
         "sentence_read_time",
+        "speed_error",
     ]
