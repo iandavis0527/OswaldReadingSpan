@@ -18,8 +18,8 @@ if __name__ == "__main__":
     mount_source = "/home/mraUser/online_experiments_data"
 
     if args.debug:
-        if not os.path.exists("./oswald_reading_data"):
-            os.makedirs("./oswald_reading_data")
+        if not os.path.exists("./digital_deception/rspan/"):
+            os.makedirs("./digital_deception/rspan/")
 
         mount_source = pathlib.Path(".").absolute().resolve()
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         version_number=docker_utils.get_version_number().replace("-", "."),
         mount=True,
         mount_source=mount_source,
-        mount_folder="oswald_reading_data",
+        mount_folder="digital_deception/rspan/",
         mount_destination="/oswald_reading_data",
         restart_policy="unless-stopped",
         port_mappings={"5002": "5002"},
