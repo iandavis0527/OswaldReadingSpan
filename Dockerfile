@@ -37,4 +37,4 @@ COPY ./oswald_reading_span/backend /OswaldReadingSpan/oswald_reading_span/backen
 
 EXPOSE 5002
 
-CMD ["python3.6", "-m", "oswald_reading_span.application", "--shared_data_location", "/oswald_reading_data/", "--port", "5002", "--subdomain", "/"]
+CMD ["python3.6", "-m", "oswald_reading_span.application", "--shared_data_location", "/oswald_reading_data/", "--port", "5002", "--subdomain", "/", "--production"]
