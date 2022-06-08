@@ -32,4 +32,5 @@ if __name__ == "__main__":
         mount_destination="/oswald_reading_data",
         restart_policy="unless-stopped",
         port_mappings={"5002": "5002"},
+        network_mode="online-experiments",
     )
