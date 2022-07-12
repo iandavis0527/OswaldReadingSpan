@@ -37,7 +37,7 @@ def setup_server(subdomain="", shared_data_location=None, production=False):
     application_data.initialize(
         subdomain=subdomain,
         application_location=server_directory,
-        shared_data_location=server_directory,
+        shared_data_location=shared_data_location,
         template_location=template_location,
         api_key_filepath=api_key_filepath,
         production=production,
