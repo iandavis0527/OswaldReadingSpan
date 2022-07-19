@@ -80,47 +80,52 @@ Provided here is a rough outline of the frontend source code. Files not mentione
 The frontend code relies heavily on the Bloc design pattern which makes managing a complex app with many events and transitions easy. Blocs maintain a current state, which is emitted to BlocBuilders as a stream whenever that state changes. Blocs react to Events and transition states accordingly.
 
 The frontend code is broken up into 3 sub projects written in ReactJS: common, export, main. The common project contains small utility functions and common javascript logic used by both the export and main projects (primarily, networking code). The export project contains the code to draw the data export table, and send network requests to the backend to export the data to CSV. The main project is the meat of the code, and is described by this outline:
-Index.js: The entry point to the application. Handled here are the Window.postMessage events for embedding in Qualtrics, and rendering the main React component in App.tsx.
-App.tsx: The main React component of the experiment. This uses AppBloc.ts and a BlocBuilder to render the main screens of the experiment based on the current AppState.
-/states/: Contains definitions of the different states of the app, practice letters session, practice sentence session, practice both session, and main experiment session. These files can be viewed as defining a map of the transitions of the app throughout the lifetime of the task. They are each tied to a Bloc which maps Events to state transitions.
-/events/: Linked to states, contains event definitions that indicate the many different events that the app responds to. Each event is generally tied to one of the Blocs, and is tied to a transition from one state to another. Some events are directly tied to user input, while others are generated programmatically to orchestrate the experiment timing.
-/stimuli/: Contains the stimuli used by the experiment, primarily a bank of sentences and letters. This information is pulled directly from the original E-Prime experiment.
-/letters/: Contains experiment information pertaining to letters, including the PracticeLetters Bloc and components for Letter instructions, Letter View and Letter Grid View.
-/sentence/: Contains experiment information pertaining to sentences, including the PracticeSentences Bloc and components for Sentence instructions, Sentence View and Sentence Feedback View.
-/experiment/: Contains experiment information orchestrating the practice both session and the main session, including the Experiment Bloc and components for the Practice Both instructions.
-/assets/instructions/: Screenshots of the experiment used in the instruction screens to demonstrate the functioning of the task.
+* `index.js`: The entry point to the application. Handled here are the Window.postMessage events for embedding in Qualtrics, and rendering the main React component in App.tsx.
+* `App.tsx`: The main React component of the experiment. This uses AppBloc.ts and a BlocBuilder to render the main screens of the experiment based on the current AppState.
+* `/states/`: Contains definitions of the different states of the app, practice letters session, practice sentence session, practice both session, and main experiment session. These files can be viewed as defining a map of the transitions of the app throughout the lifetime of the task. They are each tied to a Bloc which maps Events to state transitions.
+* `/events/`: Linked to states, contains event definitions that indicate the many different events that the app responds to. Each event is generally tied to one of the Blocs, and is tied to a transition from one state to another. Some events are directly tied to user input, while others are generated programmatically to orchestrate the experiment timing.
+* `/stimuli/`: Contains the stimuli used by the experiment, primarily a bank of sentences and letters. This information is pulled directly from the original E-Prime experiment.
+* `/letters/`: Contains experiment information pertaining to letters, including the PracticeLetters Bloc and components for Letter instructions, Letter View and Letter Grid View.
+* `/sentence/`: Contains experiment information pertaining to sentences, including the PracticeSentences Bloc and components for Sentence instructions, Sentence View and Sentence Feedback View.
+* `/experiment/`: Contains experiment information orchestrating the practice both session and the main session, including the Experiment Bloc and components for the Practice Both instructions.
+* `/assets/instructions/`: Screenshots of the experiment used in the instruction screens to demonstrate the functioning of the task.
 Docker
-The docker image is built on top of the CherrypyDocker image: https://github.com/iandavis0527/CherrypyDocker. You should build and tag this image by cloning the repo and running python build_docker_container.py first.
 
-If you build and run the docker container here using build_docker_container.py, the server will run by default on port 5001. This is an implementation detail of the server architecture of the original experiment. You can change this by editing build_docker_container.py or building your own docker deploy script.
+The docker image is built on top of the CherrypyDocker image: https://github.com/iandavis0527/CherrypyDocker. You should build and tag this image by cloning the repo and running `python build_docker_container.py` first.
+
+If you build and run the docker container here using `build_docker_container.py`, the server will run by default on port 5001. This is an implementation detail of the server architecture of the original experiment. You can change this by editing `build_docker_container.py` or building your own docker deploy script.
 
 NOTE: Cherrypy is classed as a production ready http server by itself, which is what these docker images use. However, cherrypy supports being run as a WSGI application using mod-wsgi with most common web servers.
 Result Data
-Structure definitions for result data are contained both in the frontend and backend code. In the frontend, they are located in /common/src/network/serialized_data/. In the backend, you can find them in /models/. There are some asymmetries between the two implementations, mainly due to SQL database structure requirements.
+Structure definitions for result data are contained both in the frontend and backend code. In the frontend, they are located in `/common/src/network/serialized_data/`. In the backend, you can find them in `/models/`. There are some asymmetries between the two implementations, mainly due to SQL database structure requirements.
 
 A loose overview of the result data structure (defined in the frontend) is as follows:
 
 Result 
-subjectId: string
-experimentVersion: string
-timestamp: unix timestamp
-letter_result: LetterResult
-sentence_result: SentenceResult
+* `subjectId`: string
+* `experimentVersion`: string
+* `timestamp`: unix timestamp
+* `letter_result`: LetterResult
+
 LetterResult
-proper_letters: Array<Array<String>>
-chosen_letters: Array<Array<String>>
-number_correct: number
-total_letters: number
+* `sentence_result`: SentenceResult
+* `proper_letters`: Array\<Array\<String>>
+* `chosen_letters`: Array\<Array\<String>>
+* `number_correct`: number
+* `total_letters`: number
+
 SentenceResult
-sentences: Array<String>
-responses: Array<boolean | null> // Can be null in the case that the user didn’t respond within the maximum reading time.
-expected_response: Array<boolean>
-reading_times: Array<number | null> // Can be null in the case that the user didn’t respond within the maximum reading time.
-average_rt_millis: number
-number_correct: number
-speed_errors: number
+* `sentences`: Array\<String>
+* `responses`: Array\<boolean | null> // Can be null in the case that the user didn’t respond within the maximum reading time.
+* `expected_response`: Array\<boolean>
+* `reading_times`: Array\<number | null> // Can be null in the case that the user didn’t respond within the maximum reading time.
+* `average_rt_millis`: number
+* `number_correct`: number
+* `speed_errors`: number
+
 NOTE: Network storage of results was not tested on low-bandwidth connections like cellular. There is currently no robust retry logic in the code for uploading results, so if a network error occurs causing timeout or other issue, the results will not be uploaded.
-Database
+
+# Database
 The span task uses SQLAlchemy for database management, so most common SQL backends are supported (MySQL, PostreSQL, SQLite, etc). By default, the application has support for SQLite and MySQL, and determines which to use based on the production flag passed to the server and the existence of a mysql.credentials file, describing the connection to the MySQL Server. This file should be a single JSON object with keys username, password, host, db_name and live in /oswald_reading_span/backend/configuration/. 
 
 SQLAlchemy table and record definitions are organized throughout the backend folder, in files named models.py. 
