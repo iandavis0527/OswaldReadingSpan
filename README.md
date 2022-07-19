@@ -25,4 +25,4 @@ Once all dependencies are prepared, you can run the span task using python -m os
     [07/Jul/2022:11:16:17] ENGINE Bus STARTED
 ```
 
-You can then navigate your browser to [http://localhost:8080/digital-deception/rspan?subjectId=test123]
+You can then navigate your browser to http://localhost:8080/digital-deception/rspan?subjectId=test123
